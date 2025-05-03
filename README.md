@@ -1,8 +1,11 @@
 # Beschreibung
 Diese Karte zeigt die geplanten Windrad Projekte (WEA) in Niederbayern.
+
 ![image](https://github.com/user-attachments/assets/375919e2-440c-45cf-b154-52458e4c4265)
 
 # Features
+- Zoom
+- Abstandsmessung
 - Ein- / Ausblenden von Windrad-Parks
 - Ein- / Ausblenden von Vögel
 - Ein- / Ausblenden von Greifvögel
