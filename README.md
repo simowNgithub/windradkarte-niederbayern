@@ -4,10 +4,10 @@ Diese Karte zeigt die geplanten Windrad Projekte (WEA) in Niederbayern.
 ![image](https://github.com/user-attachments/assets/375919e2-440c-45cf-b154-52458e4c4265)
 
 Karten:
-Sateliten Karte
-Topografische Karte
-Carto Light
-Carto Dark
+- Sateliten Karte
+- Topografische Karte
+- Carto Light
+- Carto Dark
 
 # Features
 - Zoom
