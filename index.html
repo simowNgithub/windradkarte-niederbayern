@@ -14,6 +14,8 @@
   <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
   <!-- Proj4js für Koordinatenumrechnung -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.min.js"></script>
+  <!-- Leaflet WFS Plugin -->
+  <script src="https://unpkg.com/leaflet.wfs@1.4.0/dist/leaflet.wfs.min.js"></script>
   <style>
     #map {
       height: 100vh;
@@ -145,6 +147,72 @@
       font-weight: bold;
       border: 2px solid #000;
     }
+
+     /* Neuer CSS für die klappbare Legende */
+  .legend-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-height: 80vh; /* Maximale Höhe auf 80% des Viewports */
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .legend-toggle {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .legend-content {
+    background: white;
+    padding: 10px;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    max-height: calc(80vh - 40px); /* Höhe anpassen */
+    overflow-y: auto; /* Scrollen nur falls nötig */
+  }
+
+  .legend-content.collapsed {
+    display: none;
+  }
+
+  .toggle-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s;
+  }
+
+  .toggle-icon.collapsed {
+    transform: rotate(-90deg);
+  }
+
+  /* Bestehende Legenden-Styles beibehalten */
+  .legende-item {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .legende-farbe {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 5px;
+    display: inline-block;
+  }
+
+  .legende-symbol {
+    margin-right: 5px;
+    font-size: 1.2rem;
+  }
   </style>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.css" />
@@ -218,15 +286,14 @@
       { nr: 6, lat: 48.767735099946115, lon: 12.401343333364904, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
       { nr: 7, lat: 48.756218042207614, lon: 12.389455141070286, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
       { nr: 8, lat: 48.7479530723291, lon: 12.38826437273897, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 9, lat: 48.73890660731065, lon: 12.360983651187365, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
       { nr: 1, lat: 48.750637268186914, lon: 12.155367023131237, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
       { nr: 2, lat: 48.75706065405235, lon: 12.152498571257748, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
       { nr: 3, lat: 48.76132119693771, lon: 12.149282746603689, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
       { nr: 4, lat: 48.76602828074706, lon: 12.152499212424551, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
       { nr: 5, lat: 48.76124314532713, lon: 12.164311967658676, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
-      { nr: 1, lat: 48.716866618766794, lon: 12.491959206627964, farbe: 'white', park: 'Windpark 5 (JUWI)' },
-      { nr: 2, lat: 48.720197520855756, lon: 12.484463232259348, farbe: 'white', park: 'Windpark 5 (JUWI)' },
-      { nr: 3, lat: 48.72545106716817, lon: 12.488598386629038, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+      { nr: 1, lat: 48.713636152541376, lon: 12.493879926994746, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+      { nr: 2, lat: 48.71665548083341, lon: 12.485683436229882, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+      { nr: 3, lat: 48.720373016398355, lon: 12.492882029639608, farbe: 'white', park: 'Windpark 5 (JUWI)' },
       { nr: 1, lat: 48.8440813247077, lon: 12.359145485472046, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
       { nr: 2, lat: 48.845555368316504, lon: 12.3521541576846, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
       { nr: 3, lat: 48.83992829061574, lon: 12.35311653288946, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
@@ -235,19 +302,13 @@
       { nr: 6, lat: 48.82754162109488, lon: 12.333723190701702, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
       { nr: 7, lat: 48.82545275997033, lon: 12.306464051724399, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
       { nr: 8, lat: 48.82248375555308, lon: 12.308404099666037, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 1, lat: 48.72347376760382, lon: 12.301778018027415, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 2, lat: 48.71876501559901, lon: 12.30092837737151, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 3, lat: 48.72388170390228, lon: 12.311048327385334, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 4, lat: 48.71857600327504, lon: 12.310788079055413, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 5, lat: 48.72588934942211, lon: 12.317074003013339, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 6, lat: 48.72948608962935, lon: 12.308654658554874, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 7, lat: 48.716356668973226, lon: 12.314257871507822, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 1, lat: 48.73722461738242, lon: 12.257179316535407, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 2, lat: 48.73607761280017, lon: 12.263922859171627, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 3, lat: 48.7324351947565, lon: 12.259010208227652, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 4, lat: 48.728530000583746, lon: 12.257330708105025, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 5, lat: 48.72387731070697, lon: 12.255072116647751, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 6, lat: 48.72121647024213, lon: 12.253087045691906, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+      { nr: 1, lat: 48.72388170390228, lon: 12.311048327385334, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
+      { nr: 2, lat: 48.71857600327504, lon: 12.310788079055413, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
+      { nr: 1, lat: 48.740060245087534, lon: 12.265816337239311, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+      { nr: 2, lat: 48.7353745689905, lon: 12.268615979244487, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+      { nr: 3, lat: 48.72509473571516, lon: 12.268482650850736, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+      { nr: 4, lat: 48.724021541397256, lon: 12.25715890438672, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+      { nr: 5, lat: 48.72533348436944, lon: 12.260327563369302, farbe: 'green', park: 'Windpark 8 (JUWI)' },
       { nr: 1, lat: 48.8686952616524, lon: 12.396411736548476, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
       { nr: 2, lat: 48.86655095601276, lon: 12.388251980709065, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
       { nr: 3, lat: 48.85786742664067, lon: 12.391750805681868, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
@@ -405,45 +466,158 @@
     // Nur die Windräder-Layergruppe zur Karte hinzufügen
     windräderLayer.addTo(map);
 
-    // Legende hinzufügen
-    const legende = L.control({position: 'bottomright'});
+    // WMS-Layer für Windräder aus den Metadaten hinzufügen
+    const windraederWMSLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/windenergieanlagen?", {
+        layers: 'windenergieanlagen',
+        format: 'image/png',
+        transparent: true,
+        version: '1.3.0',
+        attribution: 'Bayerisches Landesamt für Umwelt'
+    });
 
-    legende.onAdd = function(map) {
-      const div = L.DomUtil.create('div', 'legende');
-      div.innerHTML = `
-        <h4>Legende</h4>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-yellow"></span> Windpark 1 (JUWI)
-        </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-blue"></span> Windpark 2 (Primus)
-        </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-red"></span> Windpark 3 (Herrmann)
-        </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-gray"></span> Windpark 4 (JUWI)
-        </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-white"></span> Windpark 5 (JUWI)
-        </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-orange"></span> Windpark 6 (UNENDLICH ENERGIE)
-        </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-black"></span> Windpark 7 (KOLLER)
-        </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-green"></span> Windpark 8 (JUWI)
-          </div>
-        <div class="legende-item">
-          <span class="legende-farbe windrad-brown"></span> Windpark 9 (ALTERRIC)
-          </div>
-      `;
-      return div;
-    };
+	  // WMS-Layer für Windvorranggebiete aus den Metadaten hinzufügen
+     const windvorranggebiete = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/planungsgrundlagen_wind?", {
+    layers: 'gebietskul_wind_2024_zoom1,gebietskul_wind_2024_zoom2', // Die relevanten Layer aus den Metadaten
+    format: 'image/png',
+    transparent: true,
+    version: '1.3.0',
+    attribution: 'Bayerisches Landesamt für Umwelt'
+});
 
-    legende.addTo(map);
+const biotopLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/natur/biotopkartierung?", {
+    layers: 'biotop_flaeche,biotop_linie,biotop_punkt',
+    format: 'image/png',
+    transparent: true,
+    version: '1.1.1',
+    attribution: "Biotopkartierung: © Bayerisches Landesamt für Umwelt"
+});
+
+const naturschutzLayer = L.tileLayer.wms("https://geodienste.bfn.de/ogc/bfn/schutzgebiete", {
+    layers: 'bfn:Naturschutzgebiete',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Daten: © BfN"
+});
+
+// WMS-Layer für Warngebiete auf Gemeindebasis
+const dwdWarnGebieteGemeinden = L.tileLayer.wms('https://maps.dwd.de/geoserver/dwd/wms', {
+  layers: 'dwd:Warngebiete_Gemeinden',  // Warngebiete auf Gemeindebasis
+  format: 'image/png',
+  transparent: true,
+  attribution: '© Deutscher Wetterdienst'
+});
+
+// WMS-Layer für Warngebiete auf Kreisbasis
+const dwdWarnGebieteKreise = L.tileLayer.wms('https://maps.dwd.de/geoserver/dwd/wms', {
+  layers: 'dwd:Warngebiete_Kreise',  // Warngebiete auf Kreisbasis
+  format: 'image/png',
+  transparent: true,
+  attribution: '© Deutscher Wetterdienst'
+});
+
+
+  // Legende mit Auf-/Zuklapp-Funktion
+  const legendContainer = L.DomUtil.create('div', 'legend-container');
+  legendContainer.innerHTML = `
+    <div class="legend-toggle">
+      <span>Legende</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="legend-content">
+		      <p>------------------Windparks/Windräder------------------</p>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-yellow"></span> Windpark 1 (JUWI)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-blue"></span> Windpark 2 (Primus)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-red"></span> Windpark 3 (Herrmann)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-gray"></span> Windpark 4 (JUWI)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-white"></span> Windpark 5 (JUWI)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-orange"></span> Windpark 6 (UNENDLICH ENERGIE)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-black"></span> Windpark 7 (KOLLER)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-green"></span> Windpark 8 (JUWI)
+      </div>
+      <div class="legende-item">
+        <span class="legende-farbe windrad-brown"></span> Windpark 9 (ALTERRIC)
+      </div>
+      <div class="legende-item">
+        <img src="windradicon.png" width="17">&nbsp;Vorhandene Windräder
+      </div>
+	  	      <p>-------------------Kartenmarkierungen------------------</p>
+      <div class="legende-item">
+        <span class="legende-symbol">🐦-🦅-🦉</span> Vögel-Greifvögel-Eulen
+      </div>
+      <div class="legende-item">
+        <span class="legende-symbol">🦎</span> Reptilien
+      </div>
+      <div class="legende-item">
+        <span class="legende-symbol">🦋</span> Insekten
+      </div>
+      <div class="legende-item">
+        <span class="legende-symbol">🦇</span> Fledermäuse
+      </div>
+      <div class="legende-item">
+        <span class="legende-symbol">🌹</span> Pflanzen
+      </div>
+      <div class="legende-item">
+        <span class="legende-symbol">🏛️</span> Denkmäler
+      </div>
+	      <p>-------------------Windvorranggebiete------------------</p>
+	        <div class="legende-item">
+        <span style="background: #22a822; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Geeignete Flächen ab 5,5ms Windhöffigkeit
+      </div>
+      <div class="legende-item">
+        <span style="background: #44d844; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Geeignete Flächen ab 4,8ms Windhöffigkeit
+      </div>
+      <div class="legende-item">
+        <span style="background: #fbfb53; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Bedingt Geeignete Flächen
+      </div>
+      <div class="legende-item">
+        <span style="background: #ffb82b; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;In der Regel nicht geeignete Flächen
+      </div>
+      <div class="legende-item">
+        <span style="background: #c9ebeb; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Nicht untersucht zu geringe Windhöffigkeit
+      </div>
+    </div>
+  `;
+
+  // Zur Karte hinzufügen
+  map.getContainer().appendChild(legendContainer);
+
+  // Klappfunktion hinzufügen
+  const toggleButton = legendContainer.querySelector('.legend-toggle');
+  const toggleIcon = legendContainer.querySelector('.toggle-icon');
+  const legendContent = legendContainer.querySelector('.legend-content');
+
+  let isCollapsed = false;
+
+  toggleButton.addEventListener('click', function() {
+    isCollapsed = !isCollapsed;
+    if (isCollapsed) {
+      legendContent.classList.add('collapsed');
+      toggleIcon.classList.add('collapsed');
+    } else {
+      legendContent.classList.remove('collapsed');
+      toggleIcon.classList.remove('collapsed');
+    }
+  });
+
+  // Optional: Standardmäßig eingeklappt starten
+  // legendContent.classList.add('collapsed');
+  // toggleIcon.classList.add('collapsed');
+  // isCollapsed = true;
 
     // Basiskarten
     const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -458,10 +632,20 @@
       maxZoom: 19
     });
 
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '© OpenStreetMap-Mitwirkende'
+    });
+
     const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: '&copy; Esri, DigitalGlobe, GeoEye',
       maxZoom: 19
     });
+
+  const opentopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: 'Kartendaten: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, SRTM | Darstellung: &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
+  });
 
     const esriLabels = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Labels © Esri',
@@ -474,69 +658,32 @@
     // Standardkarte
     esriSatWithLabels.addTo(map);
 
-    // Layer-Wechsler
-    const baseMaps = {
-      "Satellit (mit Ortsnamen)": esriSatWithLabels,
-      "Carto Light (mit Ortsnamen)": cartoLight,
-      "Carto Dark (mit Ortsnamen)": cartoDark,
-    };
-
-    // Overlay-Layer
-    const naturschutz = L.tileLayer.wms('https://geodienste.bfn.de/ogc/wms/schutzgebiete', {
-      layers: 'Naturschutzgebiete',
-      format: 'image/png',
-      transparent: true,
-      attribution: '© BfN'
-    });
-
-    const wind = L.tileLayer.wms('https://maps.dwd.de/geoserver/wms', {
-      layers: 'dwd:Windgeschwindigkeit',
-      format: 'image/png',
-      transparent: true,
-      attribution: '© DWD'
-    });
-
-    const hoehenmodell = L.tileLayer.wms('https://ows.terrestris.de/osm/service?', {
-      layers: 'SRTM30-Colored-Hillshade',
-      format: 'image/png',
-      transparent: true,
-      attribution: '© terrestris'
-    });
-
-    const windvorrangflächen = new L.FeatureGroup().addTo(map);
-
-    const drawControl = new L.Control.Draw({
-      edit: { featureGroup: windvorrangflächen },
-      draw: {
-        polygon: true,
-        polyline: false,
-        rectangle: true,
-        circle: false,
-        marker: false,
-        circlemarker: false
-      }
-    });
-    map.addControl(drawControl);
-
-    map.on(L.Draw.Event.CREATED, function (e) {
-      const layer = e.layer;
-      windvorrangflächen.addLayer(layer);
-    });
-
-    L.control.ruler().addTo(map);
-    L.control.layers(baseMaps, {
-      "Naturschutzgebiete": naturschutz,
-      "Windgeschwindigkeit": wind,
-      "Höhenmodell": hoehenmodell,
-      "Windräder": windräderLayer,
-      "Vögel": vögelLayer,
-      "Pflanzen": pflanzenLayer,
-      "Reptilien": reptilienLayer,
-      "Insekten": insektenLayer,
-      "Fledermäuse": säugetierLayer,
-      "Denkmäler": denkmälerLayer,
-      "Windvorrangflächen (zeichnen)": windvorrangflächen
-    }).addTo(map);
+// Layer-Control mit allen Layern
+L.control.ruler().addTo(map);
+L.control.layers({
+  "Satelliten Karte": esriSatWithLabels,
+  "OpenStreetMap": osm,
+  "Topografische Karte": opentopo,
+  "Carto Light": cartoLight,
+  "Carto Dark": cartoDark
+}, {
+  //"Naturschutzgebiete": naturschutz,
+  "Geplante Windräder": windräderLayer,
+  "Vorhandene Windräder": windraederWMSLayer,
+   "Windvorranggebiete": windvorranggebiete,
+   //"Naturschutzgebiete": naturschutzLayer,
+   //"Biotopkartierung Bayern": biotopLayer,
+  "Vögel": vögelLayer,
+  "Pflanzen": pflanzenLayer,
+  "Reptilien": reptilienLayer,
+  "Insekten": insektenLayer,
+  "Fledermäuse": säugetierLayer,
+  "Denkmäler": denkmälerLayer,
+  "Windwarnungen Gemeinden": dwdWarnGebieteGemeinden,
+  "Windwarnungen Kreise": dwdWarnGebieteKreise
+}, {
+  collapsed: true // Optional: Control standardmäßig ausgeklappt
+}).addTo(map);
 
     // Karte auf die gesamten sichtbaren Layer zoomen
     const bounds = L.latLngBounds();
@@ -563,3 +710,4 @@
   </script>
 </body>
 </html>
+
