@@ -4,6 +4,7 @@ Diese Karte zeigt die geplanten Windrad Projekte (WEA) in Niederbayern.
 ![image](https://github.com/user-attachments/assets/375919e2-440c-45cf-b154-52458e4c4265)
 
 Karten:
+- Openstreetmap
 - Sateliten Karte
 - Topografische Karte
 - Carto Light
@@ -12,6 +13,8 @@ Karten:
 # Features
 - Zoom
 - Abstandsmessung
+- -Koordinatenanzeige (NEU)
+- Ein- / Ausblenden von Windvorranggebieten
 - Ein- / Ausblenden von Windräder/Windrad-Parks
 - Ein- / Ausblenden von Vorhandenen Windrädern
 - Ein- / Ausblenden von Vögel
@@ -22,7 +25,11 @@ Karten:
 - Ein- / Ausblenden von Denkmäler
 - Ein- / Ausblenden von Fledermäuse
 - Ein- / Ausblenden von Pflanzen
-- (geplant) Ein- / Ausblenden von Biotopen
+- Ein- / Ausblenden von Biotopen (GEPLANT)
+- Ein- / Ausblenden von Naturschutzgebieten (GEPLANT)
+- Ein- / Ausblenden von Staatsforsten (GEPLANT)
+- Ein- / Ausblenden von Waldfunktionskarte (GEPLANT)
+- Ein- / Ausblenden von Windgeschwindigkeiten (GEPLANT)
 
 # Anwendung
 - https://buergerinitiative-pronatur.de/
