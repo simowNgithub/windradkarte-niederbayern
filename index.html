@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -15,6 +14,11 @@
   <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
   <!-- Leaflet WFS Plugin -->
   <script src="https://unpkg.com/leaflet.wfs@1.4.0/dist/leaflet.wfs.min.js"></script>
+ <!-- Leaflet Minimap JS -->
+  <script src="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js"></script>
+  <!-- Leaflet Minimap CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css" />
+
   <style>
     #map {
     height: 100vh;
@@ -32,17 +36,17 @@
     text-align: center;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     }
-    .windrad-red { background-color: red; color: white; }
-    .windrad-yellow { background-color: yellow; color: black; }
-    .windrad-blue { background-color: blue; color: white; }
-    .windrad-gray { background-color: gray; color: white; }
-    .windrad-orange { background-color: orange; color: black; }
-    .windrad-white { background-color: white; color: black; border: 1px solid #ccc; }
-    .windrad-black { background-color: black; color: white; }
-    .windrad-green { background-color: #90EE90; color: black; }
-    .windrad-purple { background-color: #DDA0DD; color: black; }
-    .windrad-lightblue { background-color: #ADD8E6; color: black; }
-    .windrad-brown { background-color: #964B00; color: white; }
+    .windrad-red { background-color: red; color: white; border: 1px solid #000000; }
+    .windrad-yellow { background-color: yellow; color: black; border: 1px solid #000000; }
+    .windrad-blue { background-color: blue; color: white; border: 1px solid #000000; }
+    .windrad-gray { background-color: gray; color: white; border: 1px solid #000000; }
+    .windrad-orange { background-color: orange; color: black; border: 1px solid #000000; }
+    .windrad-white { background-color: white; color: black; border: 1px solid #000000; }
+    .windrad-black { background-color: black; color: white; border: 1px solid #000000; }
+    .windrad-green { background-color: #90EE90; color: black; border: 1px solid #000000; }
+    .windrad-purple { background-color: #DDA0DD; color: black; border: 1px solid #000000; }
+    .windrad-lightblue { background-color: #ADD8E6; color: black; border: 1px solid #000000; }
+    .windrad-brown { background-color: #964B00; color: white; border: 1px solid #000000; }
 
     .ort-label {
     font-size: 0.8rem;
@@ -118,9 +122,10 @@
     }
 
     .legende-item {
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 2px 0;
     }
 
     .legende-farbe {
@@ -153,7 +158,7 @@
     bottom: 20px;
     left: 20px;
     z-index: 1000;
-    max-height: 80vh;
+    max-height: 100vh;
     overflow: hidden;
     transition: all 0.3s ease;
     }
@@ -212,6 +217,7 @@
     font-size: 1.2rem;
     }
 
+
     /* Koordinatenanzeige rechts unten */
     .coordinates-display {
     position: absolute;
@@ -230,7 +236,7 @@
     /* Zoom-Buttons rechts unten (über Koordinaten) */
     .leaflet-control-zoom {
     position: absolute !important;
-    bottom: 80px !important;
+    bottom: 120px !important;
     right: 20px !important;
     top: auto !important;
     left: auto !important;
@@ -252,7 +258,59 @@
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    display: block !important;
+    z-index: 9999;
   }
+    /* Kontextmenü-Styles */
+  #context-menu {
+    position: absolute;
+    display: none;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    min-width: 220px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 10000;
+    font-family: sans-serif;
+  }
+
+  #context-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+  }
+
+  #context-menu ul li {
+    padding: 8px 15px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  #context-menu ul li:hover {
+    background-color: #0062cc;
+    color: white;
+  }
+
+    .map-direction {
+    position: absolute;
+    font-weight: bold;
+    background: rgba(255,255,255,0.7);
+    padding: 2px 6px;
+    border-radius: 3px;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  .north { top: 10px; left: 50%; transform: translateX(-50%); }
+  .south { bottom: 10px; left: 50%; transform: translateX(-50%); }
+  .east { right: 10px; top: 50%; transform: translateY(-50%); }
+  .west { left: 10px; top: 50%; transform: translateY(-50%); }
+
+    /* Minimap auf Mobilgeräten ausblenden */
+  @media (max-width: 768px) {
+  .leaflet-control-minimap {
+    display: none !important;
+  }
+}
   </style>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.css" />
@@ -268,7 +326,7 @@
 </head>
 <body>
 <div id="address-search-container">
-  <input type="text" id="address" placeholder="Adresse/Koordinaten Suche">
+  <input type="text" id="address" placeholder="Adressen/Koordinaten Suche">
   <button onclick="searchAndAddMarker()">Suchen</button>
 </div>
 
@@ -278,6 +336,19 @@
   <div id="coordinates" class="coordinates-display">
     Lat: 0.000000, Lon: 0.000000
   </div>
+<div id="context-menu">
+  <ul>
+    <li id="copy-address">📍 Adresse kopieren</li>
+    <li id="copy-coords">🧭 Koordinaten kopieren</li>
+    <li id="copy-elevation">⛰ Höhenmeter kopieren</li>
+    <li id="show-wind">🌬 Windgeschwindigkeit anzeigen</li>
+  </ul>
+</div>
+
+<div class="map-direction north">N</div>
+<div class="map-direction east">O</div>
+<div class="map-direction south">S</div>
+<div class="map-direction west">W</div>
 
   <script>
 
@@ -286,6 +357,7 @@
       zoomControl: false // Standard Zoom-Control deaktivieren
     }).setView([48.748, 12.43], 13);
 
+    // Adressen Koordinaten Suche
       function searchAndAddMarker() {
   var address = document.getElementById('address').value;
 
@@ -311,6 +383,128 @@
       alert("Fehler bei der Anfrage: " + err);
     });
 }
+    // Rechtsklick Menü
+  const mapContainer = document.getElementById('map');
+  const contextMenu = document.getElementById('context-menu');
+  let clickedLatLng = null;
+  let lastAddress = '';
+  let lastCoords = '';
+  let lastElevation = 'unbekannt';
+
+  async function fetchElevation(lat, lon) {
+    try {
+      // Open-Elevation API
+      const res = await fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat},${lon}`);
+      const data = await res.json();
+      if (data && data.results && data.results[0] && typeof data.results[0].elevation === 'number') {
+        return data.results[0].elevation + " m";
+      }
+    } catch {
+      // Fehler ignorieren
+    }
+    return "unbekannt";
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Inhalt kopiert:\n" + text);
+      hideContextMenu();
+    }, () => {
+      alert("Kopieren fehlgeschlagen");
+      hideContextMenu();
+    });
+  }
+
+  function hideContextMenu() {
+    contextMenu.style.display = 'none';
+  }
+
+  map.on('contextmenu', async function(e) {
+    e.originalEvent.preventDefault();
+
+    clickedLatLng = e.latlng;
+    lastCoords = `${clickedLatLng.lat.toFixed(6)}, ${clickedLatLng.lng.toFixed(6)}`;
+
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${clickedLatLng.lat}&lon=${clickedLatLng.lng}`);
+      const data = await res.json();
+      lastAddress = data.display_name || "Keine Adresse gefunden";
+    } catch {
+      lastAddress = "Fehler beim Abrufen der Adresse";
+    }
+
+    lastElevation = await fetchElevation(clickedLatLng.lat, clickedLatLng.lng);
+
+    const containerPoint = map.latLngToContainerPoint(clickedLatLng);
+    contextMenu.style.top = containerPoint.y + 'px';
+    contextMenu.style.left = containerPoint.x + 'px';
+    contextMenu.style.display = 'block';
+  });
+
+  document.getElementById('copy-address').addEventListener('click', () => {
+    copyToClipboard(lastAddress);
+  });
+
+  document.getElementById('copy-coords').addEventListener('click', () => {
+    copyToClipboard(lastCoords);
+  });
+
+  document.getElementById('copy-elevation').addEventListener('click', () => {
+    copyToClipboard(lastElevation);
+  });
+
+  document.getElementById('show-wind').addEventListener('click', async () => {
+    if (!clickedLatLng) return;
+
+    try {
+      const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${clickedLatLng.lat}&longitude=${clickedLatLng.lng}&hourly=windspeed_200m`);
+      const data = await res.json();
+      let windspeed = "unbekannt";
+
+      if (data.hourly && data.hourly.windspeed_200m && data.hourly.time) {
+        const times = data.hourly.time;
+        const now = new Date();
+        let idx = times.findIndex(t => {
+          const tDate = new Date(t);
+          return tDate.getHours() === now.getHours() && tDate.getDate() === now.getDate();
+        });
+        if (idx === -1) idx = 0;
+        windspeed = data.hourly.windspeed_200m[idx] + " km/h";
+      }
+
+      L.popup()
+        .setLatLng(clickedLatLng)
+        .setContent(`<b>Windgeschwindigkeit (200m):</b> ${windspeed}`)
+        .openOn(map);
+
+    } catch {
+      alert("Fehler beim Abrufen der Winddaten");
+    }
+
+    hideContextMenu();
+  });
+
+  map.getContainer().addEventListener('click', () => {
+    hideContextMenu();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+      hideContextMenu();
+    }
+  });
+
+// MiniMap
+const miniMap = new L.Control.MiniMap(
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: ''
+  }),
+  {
+    toggleDisplay: true,
+    minimized: false,
+    position: 'topright'
+  }
+).addTo(map);
 
     // Zoom-Control rechts unten hinzufügen
     L.control.zoom({
@@ -666,6 +860,12 @@ const waldfunktionWMS = L.tileLayer.wms('https://www.fovgis.bayern.de/arcgis/ser
     <span class="legende-farbe windrad-brown"></span> Windpark 9 (ALTERRIC)
     </div>
     <div class="legende-item">
+    <span style="background: yellow; width: 12px; height: 12px; display: inline-block; border: 1px solid #000000"></span> Windpark 10
+    </div>
+    <div class="legende-item">
+    <span style="background: blue; width: 12px; height: 12px; display: inline-block; border: 1px solid #000000;"></span> Windpark 11
+    </div>
+    <div class="legende-item">
     <img src="windradicon.png" width="17">&nbsp;Vorhandene Windräder
     </div>
 	  	    <p>----Kartenmarkierungen----</p>
@@ -705,7 +905,6 @@ const waldfunktionWMS = L.tileLayer.wms('https://www.fovgis.bayern.de/arcgis/ser
     </div>
     </div>
   `;
-
   // Zur Karte hinzufügen
   map.getContainer().appendChild(legendContainer);
 
