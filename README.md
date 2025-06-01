@@ -15,6 +15,8 @@ Karten:
 - Abstandsmessung
 - Koordinatenanzeige (NEU)
 - Suche nach Adressen/Koordinaten (NEU)
+- Rechtsklickmenü (NEU)
+- Minimap (NEU)
 - Ein- / Ausblenden von Windvorranggebieten
 - Ein- / Ausblenden von Windräder/Windrad-Parks
 - Ein- / Ausblenden von Vorhandenen Windrädern
