@@ -31,6 +31,8 @@ Karten:
 - Ein- / Ausblenden von Waldfunktionskarte (GEPLANT)
 - Ein- / Ausblenden von Windgeschwindigkeiten (GEPLANT)
 
+  Weiter ist Geplant die Schallimmissionen der Windkraft Anlagen zu simulieren auf der Karte sowie die Schattenwurf Bereiche zu Simulieren und eine Heatmap ist Geplant um bisherige Vogelschläge die gemeldet wurden einzublenden.
+
 # Anwendung
 - https://buergerinitiative-pronatur.de/
 - https://www.buergerinitiative-ejun.de/
