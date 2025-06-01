@@ -13,7 +13,8 @@ Karten:
 # Features
 - Zoom
 - Abstandsmessung
-- -Koordinatenanzeige (NEU)
+- Koordinatenanzeige (NEU)
+- Suche nach Adressen/Koordinaten
 - Ein- / Ausblenden von Windvorranggebieten
 - Ein- / Ausblenden von Windräder/Windrad-Parks
 - Ein- / Ausblenden von Vorhandenen Windrädern
