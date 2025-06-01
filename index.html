@@ -12,26 +12,24 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <!-- Leaflet Draw JS -->
   <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
-  <!-- Proj4js für Koordinatenumrechnung -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.min.js"></script>
   <!-- Leaflet WFS Plugin -->
   <script src="https://unpkg.com/leaflet.wfs@1.4.0/dist/leaflet.wfs.min.js"></script>
   <style>
     #map {
-      height: 100vh;
-      width: 100%;
+    height: 100vh;
+    width: 100%;
     }
     .windrad-marker {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      font-size: 0.9rem;
-      font-weight: bold;
-      text-align: center;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     }
     .windrad-red { background-color: red; color: white; }
     .windrad-yellow { background-color: yellow; color: black; }
@@ -46,120 +44,120 @@
     .windrad-brown { background-color: #964B00; color: white; }
 
     .ort-label {
-      font-size: 0.8rem;
-      font-weight: bold;
-      color: black;
-      background: rgba(255, 255, 255, 0.8);
-      padding: 2px 5px;
-      border-radius: 3px;
-      border: 1px solid gray;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: black;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid gray;
     }
 
     .vogel-icon {
-      font-size: 1.5rem;
-      text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-      background: white;
-      border-radius: 50%;
-      padding: 5px;
-      display: inline-block;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: inline-block;
     }
 
     .pflanze-icon {
-      font-size: 1.5rem;
-      text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-      background: white;
-      border-radius: 50%;
-      padding: 5px;
-      display: inline-block;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: inline-block;
     }
 
     .reptil-icon {
-      font-size: 1.5rem;
-      text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-      background: white;
-      border-radius: 50%;
-      padding: 5px;
-      display: inline-block;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: inline-block;
     }
 
     .insekt-icon {
-      font-size: 1.5rem;
-      text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-      background: white;
-      border-radius: 50%;
-      padding: 5px;
-      display: inline-block;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: inline-block;
     }
 
     .fledermaus-icon {
-      font-size: 1.5rem;
-      text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-      background: white;
-      border-radius: 50%;
-      padding: 5px;
-      display: inline-block;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: inline-block;
     }
 
     .denkmal-icon {
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 2px white;
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 2px white;
     }
 
     .legende {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background: white;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-      z-index: 1000;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .legende-item {
-      margin: 5px 0;
-      display: flex;
-      align-items: center;
-    }
-
-    .legende-farbe {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      margin-right: 5px;
-      display: inline-block;
-    }
-
-    .legende-symbol {
-      margin-right: 5px;
-      font-size: 1.2rem;
-    }
-
-    .cluster-icon {
-      background-color: #fff;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      text-align: center;
-      line-height: 30px;
-      font-weight: bold;
-      border: 2px solid #000;
-    }
-
-     /* Neuer CSS für die klappbare Legende */
-  .legend-container {
     position: absolute;
     bottom: 20px;
     right: 20px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
     z-index: 1000;
-    max-height: 80vh; /* Maximale Höhe auf 80% des Viewports */
+    max-height: 300px;
+    overflow-y: auto;
+    }
+
+    .legende-item {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    }
+
+    .legende-farbe {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 5px;
+    display: inline-block;
+    }
+
+    .legende-symbol {
+    margin-right: 5px;
+    font-size: 1.2rem;
+    }
+
+    .cluster-icon {
+    background-color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    border: 2px solid #000;
+    }
+
+    /* Legende auf der linken Seite */
+    .legend-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    max-height: 80vh;
     overflow: hidden;
     transition: all 0.3s ease;
-  }
+    }
 
-  .legend-toggle {
+    .legend-toggle {
     background: white;
     padding: 10px 15px;
     border-radius: 5px 5px 0 0;
@@ -169,50 +167,73 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
+    }
 
-  .legend-content {
+    .legend-content {
     background: white;
     padding: 10px;
     border-radius: 0 0 5px 5px;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
-    max-height: calc(80vh - 40px); /* Höhe anpassen */
-    overflow-y: auto; /* Scrollen nur falls nötig */
-  }
+    max-height: calc(80vh - 40px);
+    overflow-y: auto;
+    }
 
-  .legend-content.collapsed {
+    .legend-content.collapsed {
     display: none;
-  }
+    }
 
-  .toggle-icon {
+    .toggle-icon {
     font-size: 1.2em;
     transition: transform 0.3s;
-  }
+    }
 
-  .toggle-icon.collapsed {
+    .toggle-icon.collapsed {
     transform: rotate(-90deg);
-  }
+    }
 
-  /* Bestehende Legenden-Styles beibehalten */
-  .legende-item {
+    .legende-item {
     margin: 5px 0;
     display: flex;
     align-items: center;
     white-space: nowrap;
-  }
+    }
 
-  .legende-farbe {
+    .legende-farbe {
     width: 15px;
     height: 15px;
     border-radius: 50%;
     margin-right: 5px;
     display: inline-block;
-  }
+    }
 
-  .legende-symbol {
+    .legende-symbol {
     margin-right: 5px;
     font-size: 1.2rem;
-  }
+    }
+
+    /* Koordinatenanzeige rechts unten */
+    .coordinates-display {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+    font-family: monospace;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    }
+
+    /* Zoom-Buttons rechts unten (über Koordinaten) */
+    .leaflet-control-zoom {
+    position: absolute !important;
+    bottom: 80px !important;
+    right: 20px !important;
+    top: auto !important;
+    left: auto !important;
+    }
   </style>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.css" />
@@ -221,176 +242,193 @@
 <style>
 .windrad-neon circle {
     filter: drop-shadow(0 0 4px currentColor)
-            drop-shadow(0 0 8px currentColor)
-            drop-shadow(0 0 12px currentColor);
+    drop-shadow(0 0 8px currentColor)
+    drop-shadow(0 0 12px currentColor);
 }
 </style>
 </head>
 <body>
   <div id="map"></div>
+
+  <!-- Koordinatenanzeige -->
+  <div id="coordinates" class="coordinates-display">
+    Lat: 0.000000, Lon: 0.000000
+  </div>
+
   <script>
     // Karte initialisieren
-    const map = L.map('map').setView([48.748, 12.43], 13);
+    const map = L.map('map', {
+      zoomControl: false // Standard Zoom-Control deaktivieren
+    }).setView([48.748, 12.43], 13);
 
-    // Proj4js Definition für UTM Zone 32N (EPSG:32632)
-    proj4.defs("EPSG:32632", "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs");
+    // Zoom-Control rechts unten hinzufügen
+    L.control.zoom({
+      position: 'bottomright'
+    }).addTo(map);
 
-    // Funktion zur Umrechnung von UTM32 nach WGS84
-    function utm32ToWgs84(x, y) {
-      return proj4("EPSG:32632", "WGS84", [x, y]);
-    }
+    // Koordinatenanzeige
+    const coordinatesDiv = document.getElementById('coordinates');
 
-    // Daten aus Excel-Datei - mit UTM32-Koordinaten umgerechnet zu WGS84
+    map.on('mousemove', function(e) {
+      const lat = e.latlng.lat.toFixed(6);
+      const lng = e.latlng.lng.toFixed(6);
+      coordinatesDiv.innerHTML = `Lat: ${lat}, Lon: ${lng}`;
+    });
+
+    // Daten aus Excel-Datei - alle Koordinaten sind jetzt WGS84
     const tiereDaten = [
-      { art: 'Digitalis purpurea', artDeutsch: 'Roter Fingerhut', artgruppe: 'Höhere Pflanzen', datum: '2020-06-16', anzahl: 100, coords: utm32ToWgs84(749503.8572555188, 5407081.362950436) },
-      { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2024-09-11', anzahl: 2, coords: utm32ToWgs84(748369.1044353144, 5406623.048289099) },
-      { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2024-06-13', anzahl: 1, coords: utm32ToWgs84(747737.3454318596, 5407297.410109525) },
-      { art: 'Pernis apivorus', artDeutsch: 'Wespenbussard', artgruppe: 'Vögel', datum: '2024-07-12', anzahl: 2, coords: utm32ToWgs84(749358.5867990127, 5407245.7955710385) },
-      { art: 'Strix aluco', artDeutsch: 'Waldkauz', artgruppe: 'Vögel', datum: '2020-05-30', anzahl: 1, coords: utm32ToWgs84(749121.7166078683, 5406261.359729853) },
-      { art: 'Asio otus', artDeutsch: 'Waldohreule', artgruppe: 'Vögel', datum: '2024-07-10', anzahl: null, coords: utm32ToWgs84(748220.7801913787, 5406978.875797099) },
-      { art: 'Muscicapa striata', artDeutsch: 'Grauschnäpper', artgruppe: 'Vögel', datum: '2017-05-26', anzahl: 2, coords: utm32ToWgs84(748110.9687258544, 5406954.553667285) },
-      { art: 'Certhia familiaris', artDeutsch: 'Waldbaumläufer', artgruppe: 'Vögel', datum: '2016-03-16', anzahl: 1, coords: utm32ToWgs84(748524.4063464565, 5406862.305753591) },
-      { art: 'Jynx torquilla', artDeutsch: 'Wendehals', artgruppe: 'Vögel', datum: '2019-05-01', anzahl: 1, coords: utm32ToWgs84(748483.9518031136, 5406832.834966197) },
-      { art: 'Acherontia atropos', artDeutsch: 'Totenkopf', artgruppe: 'Tag- und Nachtfalter', datum: '2017-06-19', anzahl: 1, coords: utm32ToWgs84(748139.7185657494, 5406943.631765395) },
-      { art: 'Linaria cannabina', artDeutsch: 'Bluthänfling', artgruppe: 'Vögel', datum: '2015-06-22', anzahl: 2, coords: utm32ToWgs84(748120.9223492107, 5406934.579518253) },
-      { art: 'Carduelis carduelis', artDeutsch: 'Stieglitz', artgruppe: 'Vögel', datum: '2017-05-25', anzahl: 2, coords: utm32ToWgs84(748182.4081259057, 5406901.407570851) },
-      { art: 'Circus pygargus', artDeutsch: 'Wiesenweihe', artgruppe: 'Vögel', datum: '2019-06-07', anzahl: 2, coords: utm32ToWgs84(747762.5021598375, 5408034.030359245) },
-      { art: 'Emberiza citrinella', artDeutsch: 'Goldammer', artgruppe: 'Vögel', datum: '2017-04-21', anzahl: 1, coords: utm32ToWgs84(748568.359480666, 5406862.314647227) },
-      { art: 'Lanius collurio', artDeutsch: 'Neuntöter', artgruppe: 'Vögel', datum: '2015-05-08', anzahl: 2, coords: utm32ToWgs84(748199.6529529693, 5406982.306907441) },
-      { art: 'Lacerta agilis', artDeutsch: 'Zauneidechse', artgruppe: 'Eidechsen u. Schlangen (Lacertidae und Serpentes)', datum: '2019-06-05', anzahl: 1, coords: utm32ToWgs84(748167.0346250326, 5406931.27977555) },
-      { art: 'Lacerta agilis', artDeutsch: 'Zauneidechse', artgruppe: 'Eidechsen u. Schlangen (Lacertidae und Serpentes)', datum: '2016-05-08', anzahl: 1, coords: utm32ToWgs84(748350.1295023056, 5407131.839790426) },
-      { art: 'Dendrocoptes medius', artDeutsch: 'Mittelspecht', artgruppe: 'Vögel', datum: '2015-04-23', anzahl: 1, coords: utm32ToWgs84(748515.7743094973, 5406835.067204385) },
-      { art: 'Troglodytes troglodytes', artDeutsch: 'Zaunkönig', artgruppe: 'Vögel', datum: '2019-10-26', anzahl: 1, coords: utm32ToWgs84(748507.948758783, 5406837.589876405) },
-      { art: 'Dryocopus martius', artDeutsch: 'Schwarzspecht', artgruppe: 'Vögel', datum: '2024-07-31', anzahl: null, coords: utm32ToWgs84(748096.5792235988, 5406690.903242896) },
-      { art: 'Nyctalus noctula', artDeutsch: 'Großer Abendsegler', artgruppe: 'Fledermäuse (Chiroptera)', datum: '2024-07-09', anzahl: 1, coords: utm32ToWgs84(748470.3923893911, 5406914.317219563) }
+    { art: 'Digitalis purpurea', artDeutsch: 'Roter Fingerhut', artgruppe: 'Höhere Pflanzen', datum: '2020-06-16', anzahl: 100, lat: 48.765864, lon: 12.395582 },
+    { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2024-09-11', anzahl: 2, lat: 48.763009, lon: 12.379937 },
+    { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2024-06-13', anzahl: 1, lat: 48.769317, lon: 12.371761 },
+    { art: 'Pernis apivorus', artDeutsch: 'Wespenbussard', artgruppe: 'Vögel', datum: '2024-07-12', anzahl: 2, lat: 48.768206, lon: 12.393755 },
+    { art: 'Strix aluco', artDeutsch: 'Waldkauz', artgruppe: 'Vögel', datum: '2020-05-30', anzahl: 1, lat: 48.75946, lon: 12.389941 },
+    { art: 'Asio otus', artDeutsch: 'Waldohreule', artgruppe: 'Vögel', datum: '2024-07-10', anzahl: null, lat: 48.766263, lon: 12.378136 },
+    { art: 'Muscicapa striata', artDeutsch: 'Grauschnäpper', artgruppe: 'Vögel', datum: '2017-05-26', anzahl: 2, lat: 48.766089, lon: 12.37663 },
+    { art: 'Certhia familiaris', artDeutsch: 'Waldbaumläufer', artgruppe: 'Vögel', datum: '2016-03-16', anzahl: 1, lat: 48.765095, lon: 12.382191 },
+    { art: 'Jynx torquilla', artDeutsch: 'Wendehals', artgruppe: 'Vögel', datum: '2019-05-01', anzahl: 1, lat: 48.764847, lon: 12.381623 },
+    { art: 'Acherontia atropos', artDeutsch: 'Totenkopf', artgruppe: 'Tag- und Nachtfalter', datum: '2017-06-19', anzahl: 1, lat: 48.765979, lon: 12.377014 },
+    { art: 'Linaria cannabina', artDeutsch: 'Bluthänfling', artgruppe: 'Vögel', datum: '2015-06-22', anzahl: 2, lat: 48.765905, lon: 12.376753 },
+    { art: 'Carduelis carduelis', artDeutsch: 'Stieglitz', artgruppe: 'Vögel', datum: '2017-05-25', anzahl: 2, lat: 48.765583, lon: 12.377568 },
+    { art: 'Circus pygargus', artDeutsch: 'Wiesenweihe', artgruppe: 'Vögel', datum: '2019-06-07', anzahl: 2, lat: 48.775922, lon: 12.372546 },
+    { art: 'Emberiza citrinella', artDeutsch: 'Goldammer', artgruppe: 'Vögel', datum: '2017-04-21', anzahl: 1, lat: 48.765078, lon: 12.382788 },
+    { art: 'Lanius collurio', artDeutsch: 'Neuntöter', artgruppe: 'Vögel', datum: '2015-05-08', anzahl: 2, lat: 48.766303, lon: 12.377851 },
+    { art: 'Lacerta agilis', artDeutsch: 'Zauneidechse', artgruppe: 'Eidechsen u. Schlangen (Lacertidae und Serpentes)', datum: '2019-06-05', anzahl: 1, lat: 48.765857, lon: 12.377377 },
+    { art: 'Lacerta agilis', artDeutsch: 'Zauneidechse', artgruppe: 'Eidechsen u. Schlangen (Lacertidae und Serpentes)', datum: '2016-05-08', anzahl: 1, lat: 48.767586, lon: 12.379986 },
+    { art: 'Dendrocoptes medius', artDeutsch: 'Mittelspecht', artgruppe: 'Vögel', datum: '2015-04-23', anzahl: 1, lat: 48.764854, lon: 12.382057 },
+    { art: 'Troglodytes troglodytes', artDeutsch: 'Zaunkönig', artgruppe: 'Vögel', datum: '2019-10-26', anzahl: 1, lat: 48.76488, lon: 12.381952 },
+    { art: 'Dryocopus martius', artDeutsch: 'Schwarzspecht', artgruppe: 'Vögel', datum: '2024-07-31', anzahl: null, lat: 48.763727, lon: 12.376275 },
+    { art: 'Nyctalus noctula', artDeutsch: 'Großer Abendsegler', artgruppe: 'Fledermäuse (Chiroptera)', datum: '2024-07-09', anzahl: 1, lat: 48.765584, lon: 12.381488 },
+    { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-03-15', anzahl: 1, lat: 48.78878537571216, lon: 12.35859387721311 },
+    { art: 'Ciconia ciconia', artDeutsch: 'Weißstorch', artgruppe: 'Vögel', datum: '2025-05-29', anzahl: 1, lat: 48.72670393477358, lon: 12.401228852428838 },
+    { art: 'Falco tinnunculus', artDeutsch: 'Turmfalke', artgruppe: 'Vögel', datum: '2025-04-20', anzahl: 2, lat: 48.72532719826952, lon: 12.357817747996055 }
     ];
 
     // Windräder-Daten
     const windräder = [
-      { nr: 1, lat: 48.734246, lon: 12.372727, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
-      { nr: 2, lat: 48.72735, lon: 12.3744, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
-      { nr: 3, lat: 48.73108, lon: 12.376065, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
-      { nr: 4, lat: 48.733353, lon: 12.385371, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
-      { nr: 1, lat: 48.76162245070192, lon: 12.32720457448543, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-      { nr: 2, lat: 48.75597936866052, lon: 12.337604234589673, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-      { nr: 3, lat: 48.75268348499753, lon: 12.327707863808396, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-      { nr: 4, lat: 48.74896408408048, lon: 12.334664962515475, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-      { nr: 5, lat: 48.74110281366956, lon: 12.341455859921119, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-      { nr: 6, lat: 48.733137671510704, lon: 12.335832410496163, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-      { nr: 7, lat: 48.7338913546195, lon: 12.34486206232525, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-      { nr: 1, lat: 48.78194044369739, lon: 12.38348704533361, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 2, lat: 48.783322137113025, lon: 12.399488814496232, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 3, lat: 48.77871310932095, lon: 12.392619462535864, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 4, lat: 48.77975104308274, lon: 12.403046353688252, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 5, lat: 48.76878519889439, lon: 12.391695832090031, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 6, lat: 48.767735099946115, lon: 12.401343333364904, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 7, lat: 48.756218042207614, lon: 12.389455141070286, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 8, lat: 48.7479530723291, lon: 12.38826437273897, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-      { nr: 1, lat: 48.750637268186914, lon: 12.155367023131237, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
-      { nr: 2, lat: 48.75706065405235, lon: 12.152498571257748, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
-      { nr: 3, lat: 48.76132119693771, lon: 12.149282746603689, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
-      { nr: 4, lat: 48.76602828074706, lon: 12.152499212424551, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
-      { nr: 5, lat: 48.76124314532713, lon: 12.164311967658676, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
-      { nr: 1, lat: 48.713636152541376, lon: 12.493879926994746, farbe: 'white', park: 'Windpark 5 (JUWI)' },
-      { nr: 2, lat: 48.71665548083341, lon: 12.485683436229882, farbe: 'white', park: 'Windpark 5 (JUWI)' },
-      { nr: 3, lat: 48.720373016398355, lon: 12.492882029639608, farbe: 'white', park: 'Windpark 5 (JUWI)' },
-      { nr: 1, lat: 48.8440813247077, lon: 12.359145485472046, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 2, lat: 48.845555368316504, lon: 12.3521541576846, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 3, lat: 48.83992829061574, lon: 12.35311653288946, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 4, lat: 48.83710502833099, lon: 12.355393618652881, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 5, lat: 48.82793893487388, lon: 12.340270171689285, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 6, lat: 48.82754162109488, lon: 12.333723190701702, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 7, lat: 48.82545275997033, lon: 12.306464051724399, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 8, lat: 48.82248375555308, lon: 12.308404099666037, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
-      { nr: 1, lat: 48.72388170390228, lon: 12.311048327385334, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 2, lat: 48.71857600327504, lon: 12.310788079055413, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
-      { nr: 1, lat: 48.740060245087534, lon: 12.265816337239311, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 2, lat: 48.7353745689905, lon: 12.268615979244487, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 3, lat: 48.72509473571516, lon: 12.268482650850736, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 4, lat: 48.724021541397256, lon: 12.25715890438672, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 5, lat: 48.72533348436944, lon: 12.260327563369302, farbe: 'green', park: 'Windpark 8 (JUWI)' },
-      { nr: 1, lat: 48.8686952616524, lon: 12.396411736548476, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
-      { nr: 2, lat: 48.86655095601276, lon: 12.388251980709065, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
-      { nr: 3, lat: 48.85786742664067, lon: 12.391750805681868, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
-      { nr: 4, lat: 48.85331609620429, lon: 12.386864085342962, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
-      { nr: 5, lat: 48.8523056524615, lon: 12.379516486908742, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
-      { nr: 6, lat: 48.851016188803236, lon: 12.376264288189658, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
-      { nr: 7, lat: 48.85365097290565, lon: 12.367049121749575, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
+    { nr: 1, lat: 48.734246, lon: 12.372727, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
+    { nr: 2, lat: 48.72735, lon: 12.3744, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
+    { nr: 3, lat: 48.73108, lon: 12.376065, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
+    { nr: 4, lat: 48.733353, lon: 12.385371, farbe: 'yellow', park: 'Windpark 1 (JUWI)' },
+    { nr: 1, lat: 48.76162245070192, lon: 12.32720457448543, farbe: 'blue', park: 'Windpark 2 (Primus)' },
+    { nr: 2, lat: 48.75597936866052, lon: 12.337604234589673, farbe: 'blue', park: 'Windpark 2 (Primus)' },
+    { nr: 3, lat: 48.75268348499753, lon: 12.327707863808396, farbe: 'blue', park: 'Windpark 2 (Primus)' },
+    { nr: 4, lat: 48.74896408408048, lon: 12.334664962515475, farbe: 'blue', park: 'Windpark 2 (Primus)' },
+    { nr: 5, lat: 48.74110281366956, lon: 12.341455859921119, farbe: 'blue', park: 'Windpark 2 (Primus)' },
+    { nr: 6, lat: 48.7338913546195, lon: 12.34486206232525, farbe: 'blue', park: 'Windpark 2 (Primus)' },
+    { nr: 1, lat: 48.78194044369739, lon: 12.38348704533361, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 2, lat: 48.783322137113025, lon: 12.399488814496232, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 3, lat: 48.77871310932095, lon: 12.392619462535864, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 4, lat: 48.77975104308274, lon: 12.403046353688252, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 5, lat: 48.76878519889439, lon: 12.391695832090031, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 6, lat: 48.767735099946115, lon: 12.40134333364904, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 7, lat: 48.756218042207614, lon: 12.389455141070286, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 8, lat: 48.7479530723291, lon: 12.38826437273897, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 9, lat: 48.771020426205894, lon: 12.412059762345175, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+    { nr: 1, lat: 48.750637268186914, lon: 12.155367023131237, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
+    { nr: 2, lat: 48.75706065405235, lon: 12.152498571257748, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
+    { nr: 3, lat: 48.76132119693771, lon: 12.149282746603689, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
+    { nr: 4, lat: 48.76602828074706, lon: 12.152499212424551, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
+    { nr: 5, lat: 48.76124314532713, lon: 12.164311967658676, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
+    { nr: 1, lat: 48.713636152541376, lon: 12.493879926994746, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+    { nr: 2, lat: 48.71665548083341, lon: 12.485683436229882, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+    { nr: 3, lat: 48.720373016398355, lon: 12.492882029639608, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+    { nr: 1, lat: 48.8440813247077, lon: 12.359145485472046, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 2, lat: 48.845555368316504, lon: 12.3521541576846, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 3, lat: 48.83992829061574, lon: 12.35311653288946, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 4, lat: 48.83710502833099, lon: 12.355393618652881, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 5, lat: 48.82793893487388, lon: 12.340270171689285, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 6, lat: 48.82754162109488, lon: 12.333723190701702, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 7, lat: 48.82545275997033, lon: 12.306464051724399, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 8, lat: 48.82248375555308, lon: 12.308404099666037, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
+    { nr: 1, lat: 48.72388170390228, lon: 12.311048327385334, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
+    { nr: 2, lat: 48.71857600327504, lon: 12.310788079055413, farbe: 'black', park: 'Windpark 7 (KOLLER)' },
+    { nr: 1, lat: 48.740060245087534, lon: 12.265816337239311, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+    { nr: 2, lat: 48.7353745689905, lon: 12.268615979244487, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+    { nr: 3, lat: 48.72509473571516, lon: 12.268482650850736, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+    { nr: 4, lat: 48.724021541397256, lon: 12.25715890438672, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+    { nr: 5, lat: 48.72533348436944, lon: 12.260327563369302, farbe: 'green', park: 'Windpark 8 (JUWI)' },
+    { nr: 1, lat: 48.8686952616524, lon: 12.396411736548476, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
+    { nr: 2, lat: 48.86655095601276, lon: 12.388251980709065, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
+    { nr: 3, lat: 48.85786742664067, lon: 12.391750805681868, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
+    { nr: 4, lat: 48.85331609620429, lon: 12.386864085342962, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
+    { nr: 5, lat: 48.8523056524615, lon: 12.379516486908742, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
+    { nr: 6, lat: 48.851016188803236, lon: 12.376264288189658, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
+    { nr: 7, lat: 48.85365097290565, lon: 12.367049121749575, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
     ];
 
     // Daten für Denkmäler
     const denkmäler = [
-      { name: 'Kirche St. Peter', lat: 48.720, lon: 12.439, beschreibung: 'Gotische Kirche aus dem 15. Jahrhundert' },
-      { name: 'Schloss Mengkofen', lat: 48.722, lon: 12.442, beschreibung: 'Ehemaliges Schloss aus dem 17. Jahrhundert' },
-      { name: 'Kapelle St. Anna', lat: 48.757, lon: 12.363, beschreibung: 'Historische Kapelle aus dem 18. Jahrhundert' },
-      { name: 'Bodendenkmäler Pramersbuch', lat: 48.726, lon: 12.361, beschreibung: 'Archäologische Fundstelle aus der Bronzezeit' },
-      { name: 'Alte Mühle Haader', lat: 48.783, lon: 12.346, beschreibung: 'Historische Wassermühle' },
-      { name: 'Burgstall Tunzenberg', lat: 48.724, lon: 12.478, beschreibung: 'Überreste einer mittelalterlichen Burg' }
+    { name: 'Kirche St. Peter', lat: 48.720, lon: 12.439, beschreibung: 'Gotische Kirche aus dem 15. Jahrhundert' },
+    { name: 'Schloss Mengkofen', lat: 48.722, lon: 12.442, beschreibung: 'Ehemaliges Schloss aus dem 17. Jahrhundert' },
+    { name: 'Kapelle St. Anna', lat: 48.757, lon: 12.363, beschreibung: 'Historische Kapelle aus dem 18. Jahrhundert' },
+    { name: 'Bodendenkmäler Pramersbuch', lat: 48.726, lon: 12.361, beschreibung: 'Archäologische Fundstelle aus der Bronzezeit' },
+    { name: 'Alte Mühle Haader', lat: 48.783, lon: 12.346, beschreibung: 'Historische Wassermühle' },
+    { name: 'Burgstall Tunzenberg', lat: 48.724, lon: 12.478, beschreibung: 'Überreste einer mittelalterlichen Burg' }
     ];
 
     // Funktion zur Erstellung eines benutzerdefinierten Icons für Windräder
     function createWindradIcon(number, colorClass) {
-      return L.divIcon({
-        className: `windrad-marker windrad-${colorClass}`,
-        html: number,
-        iconSize: [20, 20],
-        iconAnchor: [15, 15],
-      });
+    return L.divIcon({
+    className: `windrad-marker windrad-${colorClass}`,
+    html: number,
+    iconSize: [20, 20],
+    iconAnchor: [15, 15],
+    });
     }
 
     // Funktion zur Erstellung eines benutzerdefinierten Icons für verschiedene Artgruppen
     function createArtenIcon(tier) {
-      let className, emoji;
+    let className, emoji;
 
-      if (tier.artgruppe.includes('Vögel')) {
-        className = 'vogel-icon';
-        if (tier.artDeutsch.includes('Rotmilan') || tier.artDeutsch.includes('Wiesenweihe')) {
-          emoji = '🦅';
-        } else if (tier.artDeutsch.includes('Kauz') || tier.artDeutsch.includes('Eule')) {
-          emoji = '🦉';
-        } else if (tier.artDeutsch.includes('Specht')) {
-          emoji = '🐦';
-        } else {
-          emoji = '🐦';
-        }
-      }
-      else if (tier.artgruppe.includes('Pflanzen')) {
-        className = 'pflanze-icon';
-        emoji = '🌹';
-      }
-      else if (tier.artgruppe.includes('Eidechsen') || tier.artgruppe.includes('Schlangen')) {
-        className = 'reptil-icon';
-        emoji = '🦎';
-      }
-      else if (tier.artgruppe.includes('Falter')) {
-        className = 'insekt-icon';
-        emoji = '🦋';
-      }
-      else if (tier.artgruppe.includes('Fledermäuse')) {
-        className = 'fledermaus-icon';
-        emoji = '🦇';
-      }
-      else {
-        className = 'tier-icon';
-        emoji = '🐾';
-      }
+    if (tier.artgruppe.includes('Vögel')) {
+    className = 'vogel-icon';
+    if (tier.artDeutsch.includes('Rotmilan') || tier.artDeutsch.includes('Wiesenweihe')) {
+    emoji = '🦅';
+    } else if (tier.artDeutsch.includes('Kauz') || tier.artDeutsch.includes('Eule')) {
+    emoji = '🦉';
+    } else if (tier.artDeutsch.includes('Specht')) {
+    emoji = '🐦';
+    } else {
+    emoji = '🐦';
+    }
+    }
+    else if (tier.artgruppe.includes('Pflanzen')) {
+    className = 'pflanze-icon';
+    emoji = '🌹';
+    }
+    else if (tier.artgruppe.includes('Eidechsen') || tier.artgruppe.includes('Schlangen')) {
+    className = 'reptil-icon';
+    emoji = '🦎';
+    }
+    else if (tier.artgruppe.includes('Falter')) {
+    className = 'insekt-icon';
+    emoji = '🦋';
+    }
+    else if (tier.artgruppe.includes('Fledermäuse')) {
+    className = 'fledermaus-icon';
+    emoji = '🦇';
+    }
+    else {
+    className = 'tier-icon';
+    emoji = '🐾';
+    }
 
-      return L.divIcon({
-        className: className,
-        html: emoji,
-        iconSize: [25, 25],
-        iconAnchor: [15, 15]
-      });
+    return L.divIcon({
+    className: className,
+    html: emoji,
+    iconSize: [25, 25],
+    iconAnchor: [15, 15]
+    });
     }
 
     // Funktion zur Erstellung eines benutzerdefinierten Icons für Denkmäler
     function createDenkmalIcon() {
-      return L.divIcon({
-        className: 'denkmal-icon',
-        html: '🏛️',
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-      });
+    return L.divIcon({
+    className: 'denkmal-icon',
+    html: '🏛️',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+    });
     }
 
     // Layer für Gruppierung erstellen
@@ -404,63 +442,61 @@
 
     // Marker für Windräder setzen
     windräder.forEach(wr => {
-      const colorClass = wr.farbe === 'red' ? 'red' :
-                        wr.farbe === 'yellow' ? 'yellow' :
-                        wr.farbe === 'blue' ? 'blue' :
-                        wr.farbe === 'white' ? 'white' :
-                        wr.farbe === 'brown' ? 'brown' :
-                        wr.farbe === 'black' ? 'black' :
-                        wr.farbe === 'orange' ? 'orange' :
-                        wr.farbe === 'green' ? 'green' :
-                        'gray';
-      L.marker([wr.lat, wr.lon], {
-        icon: createWindradIcon(wr.nr, colorClass)
-      })
-        .addTo(windräderLayer)
-        .bindPopup(`Windrad Nr. ${wr.nr}<br>${wr.park}`);
+    const colorClass = wr.farbe === 'red' ? 'red' :
+    wr.farbe === 'yellow' ? 'yellow' :
+    wr.farbe === 'blue' ? 'blue' :
+    wr.farbe === 'white' ? 'white' :
+    wr.farbe === 'brown' ? 'brown' :
+    wr.farbe === 'black' ? 'black' :
+    wr.farbe === 'orange' ? 'orange' :
+    wr.farbe === 'green' ? 'green' :
+    'gray';
+    L.marker([wr.lat, wr.lon], {
+    icon: createWindradIcon(wr.nr, colorClass)
+    })
+    .addTo(windräderLayer)
+    .bindPopup(`Windrad Nr. ${wr.nr}<br>${wr.park}`);
     });
 
-    // Neue Tiermarker aus der Excel-Datei hinzufügen
+    // Tiermarker hinzufügen - jetzt mit direkten WGS84-Koordinaten
     tiereDaten.forEach(tier => {
-      if (!tier.coords) return;
+    if (!tier.lat || !tier.lon) return;
 
-      const [lon, lat] = tier.coords;
+    let layer;
+    if (tier.artgruppe.includes('Vögel')) {
+    layer = vögelLayer;
+    } else if (tier.artgruppe.includes('Pflanzen')) {
+    layer = pflanzenLayer;
+    } else if (tier.artgruppe.includes('Eidechsen') || tier.artgruppe.includes('Schlangen')) {
+    layer = reptilienLayer;
+    } else if (tier.artgruppe.includes('Falter')) {
+    layer = insektenLayer;
+    } else if (tier.artgruppe.includes('Fledermäuse')) {
+    layer = säugetierLayer;
+    } else {
+    layer = insektenLayer;
+    }
 
-      let layer;
-      if (tier.artgruppe.includes('Vögel')) {
-        layer = vögelLayer;
-      } else if (tier.artgruppe.includes('Pflanzen')) {
-        layer = pflanzenLayer;
-      } else if (tier.artgruppe.includes('Eidechsen') || tier.artgruppe.includes('Schlangen')) {
-        layer = reptilienLayer;
-      } else if (tier.artgruppe.includes('Falter')) {
-        layer = insektenLayer;
-      } else if (tier.artgruppe.includes('Fledermäuse')) {
-        layer = säugetierLayer;
-      } else {
-        layer = insektenLayer;
-      }
+    const marker = L.marker([tier.lat, tier.lon], {
+    icon: createArtenIcon(tier)
+    })
+    .bindPopup(`
+    <strong>${tier.artDeutsch} (${tier.art})</strong><br>
+    Artgruppe: ${tier.artgruppe}<br>
+    Datum: ${tier.datum}<br>
+    ${tier.anzahl ? 'Anzahl: ' + tier.anzahl : ''}
+    `);
 
-      const marker = L.marker([lat, lon], {
-        icon: createArtenIcon(tier)
-      })
-        .bindPopup(`
-          <strong>${tier.artDeutsch} (${tier.art})</strong><br>
-          Artgruppe: ${tier.artgruppe}<br>
-          Datum: ${tier.datum}<br>
-          ${tier.anzahl ? 'Anzahl: ' + tier.anzahl : ''}
-        `);
-
-      marker.addTo(layer);
+    marker.addTo(layer);
     });
 
     // Denkmäler-Marker hinzufügen
     denkmäler.forEach(denkmal => {
-      L.marker([denkmal.lat, denkmal.lon], {
-        icon: createDenkmalIcon()
-      })
-        .addTo(denkmälerLayer)
-        .bindPopup(`<strong>${denkmal.name}</strong><br>${denkmal.beschreibung}`);
+    L.marker([denkmal.lat, denkmal.lon], {
+    icon: createDenkmalIcon()
+    })
+    .addTo(denkmälerLayer)
+    .bindPopup(`<strong>${denkmal.name}</strong><br>${denkmal.beschreibung}`);
     });
 
     // Nur die Windräder-Layergruppe zur Karte hinzufügen
@@ -468,15 +504,15 @@
 
     // WMS-Layer für Windräder aus den Metadaten hinzufügen
     const windraederWMSLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/windenergieanlagen?", {
-        layers: 'windenergieanlagen',
-        format: 'image/png',
-        transparent: true,
-        version: '1.3.0',
-        attribution: 'Bayerisches Landesamt für Umwelt'
+    layers: 'windenergieanlagen',
+    format: 'image/png',
+    transparent: true,
+    version: '1.3.0',
+    attribution: 'Bayerisches Landesamt für Umwelt'
     });
 
 	  // WMS-Layer für Windvorranggebiete aus den Metadaten hinzufügen
-     const windvorranggebiete = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/planungsgrundlagen_wind?", {
+    const windvorranggebiete = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/planungsgrundlagen_wind?", {
     layers: 'gebietskul_wind_2024_zoom1,gebietskul_wind_2024_zoom2', // Die relevanten Layer aus den Metadaten
     format: 'image/png',
     transparent: true,
@@ -515,81 +551,107 @@ const dwdWarnGebieteKreise = L.tileLayer.wms('https://maps.dwd.de/geoserver/dwd/
   attribution: '© Deutscher Wetterdienst'
 });
 
+// Forstliche Standortskartierung Bayern
+const staatswaldLayer = L.tileLayer.wms('https://www.baysf.de/geodaten/ows?', {
+  layers: 'baysf:Staatswald',
+  format: 'image/png',
+  transparent: true,
+  version: '1.3.0',
+  attribution: '© Bayerische Staatsforsten AöR',
+  crs: L.CRS.EPSG3857  // Leider nutzlos, weil der Server nur EPSG:25832 spricht!
+});
 
-  // Legende mit Auf-/Zuklapp-Funktion
+const waldfunktionWMS = L.tileLayer.wms('https://www.fovgis.bayern.de/arcgis/services/fov/waldfunktionskarte/MapServer/WmsServer?', {
+  layers: '0', // Layer 0 = Waldfunktionskarte (laut Capabilities)
+  format: 'image/png',
+  transparent: true,
+  version: '1.3.0',
+  attribution: '© Bayerische Forstverwaltung / FoVGIS'
+});
+
+    // WMS-Layer vom Energieatlas (Windatlas 2021)
+    const windatlas = L.tileLayer.wms('https://www.lfu.bayern.de/gdi/wms/energieatlas/windatlas2021?', {
+    layers: 'Windatlas2021_mittlere_Windgeschwindigkeit_100m', // Layername laut Capabilities
+    format: 'image/png',
+    transparent: true,
+    version: '1.3.0',
+    attribution: '&copy; Bayerisches Landesamt für Umwelt'
+    });
+
+  // Legende mit Auf-/Zuklapp-Funktion (jetzt links)
   const legendContainer = L.DomUtil.create('div', 'legend-container');
   legendContainer.innerHTML = `
     <div class="legend-toggle">
-      <span>Legende</span>
-      <span class="toggle-icon">▾</span>
+    <span>Legende</span>
+    <span class="toggle-icon">▾</span>
     </div>
     <div class="legend-content">
-		      <p>------------------Windparks/Windräder------------------</p>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-yellow"></span> Windpark 1 (JUWI)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-blue"></span> Windpark 2 (Primus)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-red"></span> Windpark 3 (Herrmann)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-gray"></span> Windpark 4 (JUWI)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-white"></span> Windpark 5 (JUWI)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-orange"></span> Windpark 6 (UNENDLICH ENERGIE)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-black"></span> Windpark 7 (KOLLER)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-green"></span> Windpark 8 (JUWI)
-      </div>
-      <div class="legende-item">
-        <span class="legende-farbe windrad-brown"></span> Windpark 9 (ALTERRIC)
-      </div>
-      <div class="legende-item">
-        <img src="windradicon.png" width="17">&nbsp;Vorhandene Windräder
-      </div>
-	  	      <p>-------------------Kartenmarkierungen------------------</p>
-      <div class="legende-item">
-        <span class="legende-symbol">🐦-🦅-🦉</span> Vögel-Greifvögel-Eulen
-      </div>
-      <div class="legende-item">
-        <span class="legende-symbol">🦎</span> Reptilien
-      </div>
-      <div class="legende-item">
-        <span class="legende-symbol">🦋</span> Insekten
-      </div>
-      <div class="legende-item">
-        <span class="legende-symbol">🦇</span> Fledermäuse
-      </div>
-      <div class="legende-item">
-        <span class="legende-symbol">🌹</span> Pflanzen
-      </div>
-      <div class="legende-item">
-        <span class="legende-symbol">🏛️</span> Denkmäler
-      </div>
-	      <p>-------------------Windvorranggebiete------------------</p>
-	        <div class="legende-item">
-        <span style="background: #22a822; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Geeignete Flächen ab 5,5ms Windhöffigkeit
-      </div>
-      <div class="legende-item">
-        <span style="background: #44d844; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Geeignete Flächen ab 4,8ms Windhöffigkeit
-      </div>
-      <div class="legende-item">
-        <span style="background: #fbfb53; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Bedingt Geeignete Flächen
-      </div>
-      <div class="legende-item">
-        <span style="background: #ffb82b; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;In der Regel nicht geeignete Flächen
-      </div>
-      <div class="legende-item">
-        <span style="background: #c9ebeb; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Nicht untersucht zu geringe Windhöffigkeit
-      </div>
+		    <p>----Windparks/Windräder----</p>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-yellow"></span> Windpark 1 (JUWI)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-blue"></span> Windpark 2 (Primus)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-red"></span> Windpark 3 (Herrmann)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-gray"></span> Windpark 4 (JUWI)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-white"></span> Windpark 5 (JUWI)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-orange"></span> Windpark 6 (UNENDLICH ENERGIE)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-black"></span> Windpark 7 (KOLLER)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-green"></span> Windpark 8 (JUWI)
+    </div>
+    <div class="legende-item">
+    <span class="legende-farbe windrad-brown"></span> Windpark 9 (ALTERRIC)
+    </div>
+    <div class="legende-item">
+    <img src="windradicon.png" width="17">&nbsp;Vorhandene Windräder
+    </div>
+	  	    <p>----Kartenmarkierungen----</p>
+    <div class="legende-item">
+    <span class="legende-symbol">🐦-🦅-🦉</span> Vögel-Greifvögel-Eulen
+    </div>
+    <div class="legende-item">
+    <span class="legende-symbol">🦎</span> Reptilien
+    </div>
+    <div class="legende-item">
+    <span class="legende-symbol">🦋</span> Insekten
+    </div>
+    <div class="legende-item">
+    <span class="legende-symbol">🦇</span> Fledermäuse
+    </div>
+    <div class="legende-item">
+    <span class="legende-symbol">🌹</span> Pflanzen
+    </div>
+    <div class="legende-item">
+    <span class="legende-symbol">🏛️</span> Denkmäler
+    </div>
+	    <p>----Windvorranggebiete----</p>
+	    <div class="legende-item">
+    <span style="background: #22a822; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Geeignete Flächen ab 5,5ms Windhöffigkeit
+    </div>
+    <div class="legende-item">
+    <span style="background: #44d844; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Geeignete Flächen ab 4,8ms Windhöffigkeit
+    </div>
+    <div class="legende-item">
+    <span style="background: #fbfb53; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Bedingt Geeignete Flächen
+    </div>
+    <div class="legende-item">
+    <span style="background: #ffb82b; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;In der Regel nicht geeignete Flächen
+    </div>
+    <div class="legende-item">
+    <span style="background: #c9ebeb; width: 15px; height: 15px; display: inline-block; border: 1px solid #2b8c3e;"></span>&nbsp;Nicht untersucht zu geringe Windhöffigkeit
+    </div>
     </div>
   `;
 
@@ -606,73 +668,65 @@ const dwdWarnGebieteKreise = L.tileLayer.wms('https://maps.dwd.de/geoserver/dwd/
   toggleButton.addEventListener('click', function() {
     isCollapsed = !isCollapsed;
     if (isCollapsed) {
-      legendContent.classList.add('collapsed');
-      toggleIcon.classList.add('collapsed');
+    legendContent.classList.add('collapsed');
+    toggleIcon.classList.add('collapsed');
     } else {
-      legendContent.classList.remove('collapsed');
-      toggleIcon.classList.remove('collapsed');
+    legendContent.classList.remove('collapsed');
+    toggleIcon.classList.remove('collapsed');
     }
   });
 
-  // Optional: Standardmäßig eingeklappt starten
-  // legendContent.classList.add('collapsed');
-  // toggleIcon.classList.add('collapsed');
-  // isCollapsed = true;
-
     // Basiskarten
-    const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap & Carto',
-      subdomains: 'abcd',
-      maxZoom: 19
-    });
-
-    const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap & Carto',
-      subdomains: 'abcd',
-      maxZoom: 19
-    });
-
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '© OpenStreetMap-Mitwirkende'
     });
 
-    const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: '&copy; Esri, DigitalGlobe, GeoEye',
-      maxZoom: 19
+    const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap & Carto',
+    subdomains: 'abcd',
+    maxZoom: 19
     });
 
-  const opentopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap & Carto',
+    subdomains: 'abcd',
+    maxZoom: 19
+    });
+
+    const esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '&copy; Esri, DigitalGlobe, GeoEye',
+    maxZoom: 19
+    });
+
+    const opentopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     maxZoom: 17,
     attribution: 'Kartendaten: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, SRTM | Darstellung: &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
   });
 
     const esriLabels = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Labels © Esri',
-      maxZoom: 19
+    attribution: 'Labels © Esri',
+    maxZoom: 19
     });
 
     // Gruppierter Layer für Satellit + Beschriftung
     const esriSatWithLabels = L.layerGroup([esriSat, esriLabels]);
 
     // Standardkarte
-    esriSatWithLabels.addTo(map);
+    osm.addTo(map);
 
 // Layer-Control mit allen Layern
 L.control.ruler().addTo(map);
 L.control.layers({
-  "Satelliten Karte": esriSatWithLabels,
   "OpenStreetMap": osm,
+  "Satelliten Karte": esriSatWithLabels,
   "Topografische Karte": opentopo,
   "Carto Light": cartoLight,
   "Carto Dark": cartoDark
 }, {
-  //"Naturschutzgebiete": naturschutz,
   "Geplante Windräder": windräderLayer,
   "Vorhandene Windräder": windraederWMSLayer,
-   "Windvorranggebiete": windvorranggebiete,
-   //"Naturschutzgebiete": naturschutzLayer,
-   //"Biotopkartierung Bayern": biotopLayer,
+  "Windvorranggebiete": windvorranggebiete,
   "Vögel": vögelLayer,
   "Pflanzen": pflanzenLayer,
   "Reptilien": reptilienLayer,
@@ -680,7 +734,12 @@ L.control.layers({
   "Fledermäuse": säugetierLayer,
   "Denkmäler": denkmälerLayer,
   "Windwarnungen Gemeinden": dwdWarnGebieteGemeinden,
-  "Windwarnungen Kreise": dwdWarnGebieteKreise
+  "Windwarnungen Kreise": dwdWarnGebieteKreise,
+  "̶N̶a̶t̶u̶r̶s̶c̶h̶u̶t̶z̶g̶e̶b̶i̶e̶t̶e̶": naturschutzLayer,
+  "̶B̶i̶o̶t̶o̶p̶k̶a̶r̶t̶i̶e̶r̶u̶n̶g̶ ̶B̶a̶y̶e̶r̶n̶": biotopLayer,
+  "̶S̶t̶a̶a̶t̶s̶f̶o̶r̶s̶t̶e̶n̶ ̶(̶B̶a̶y̶S̶F̶)̶": staatswaldLayer,
+  "̶W̶a̶l̶d̶f̶u̶n̶k̶t̶i̶o̶n̶s̶k̶a̶r̶t̶e̶" : waldfunktionWMS,
+  "̶W̶i̶n̶d̶g̶e̶s̶c̶h̶w̶i̶n̶d̶i̶g̶k̶e̶i̶t̶e̶n̶": windatlas
 }, {
   collapsed: true // Optional: Control standardmäßig ausgeklappt
 }).addTo(map);
@@ -690,22 +749,21 @@ L.control.layers({
 
     // Alle Windräder zur Bounding Box hinzufügen
     windräder.forEach(wr => {
-      bounds.extend([wr.lat, wr.lon]);
+    bounds.extend([wr.lat, wr.lon]);
     });
 
     // Alle Tiere zur Bounding Box hinzufügen
     tiereDaten.forEach(tier => {
-      if (tier.coords) {
-        const [lon, lat] = tier.coords;
-        bounds.extend([lat, lon]);
-      }
+    if (tier.lat && tier.lon) {
+    bounds.extend([tier.lat, tier.lon]);
+    }
     });
 
     // Karte auf alle Punkte zentrieren
     if (!bounds.isValid()) {
-      map.setView([48.748, 12.43], 13);
+    map.setView([48.748, 12.43], 13);
     } else {
-      map.fitBounds(bounds.pad(0.1));
+    map.fitBounds(bounds.pad(0.1));
     }
   </script>
 </body>
