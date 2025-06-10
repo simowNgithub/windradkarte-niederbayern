@@ -5,19 +5,27 @@
   <title>Windparks und Artenvorkommen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="./kartendaten/leaflet.css" />
   <!-- Leaflet Draw CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+  <link rel="stylesheet" href="./kartendaten/leaflet.draw.css" />
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="./kartendaten/leaflet.js"></script>
   <!-- Leaflet Draw JS -->
   <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
   <!-- Leaflet WFS Plugin -->
-  <script src="https://unpkg.com/leaflet.wfs@1.4.0/dist/leaflet.wfs.min.js"></script>
+  <script src="./kartendaten/leaflet-wfst.min.js"></script>
  <!-- Leaflet Minimap JS -->
-  <script src="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js"></script>
+  <script src="./kartendaten/Control.MiniMap.min.js"></script>
   <!-- Leaflet Minimap CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css" />
+  <link rel="stylesheet" href="./kartendaten/Control.MiniMap.min.css" />
+
+  <link rel="stylesheet" href="./kartendaten/leaflet-ruler.css" />
+  <script src="./kartendaten/leaflet-ruler.js"></script>
+
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
   <style>
     #map {
@@ -103,11 +111,6 @@
     display: inline-block;
     }
 
-    .denkmal-icon {
-    font-size: 1.2rem;
-    text-shadow: 1px 1px 2px white;
-    }
-
     .legende {
     position: absolute;
     bottom: 20px;
@@ -138,7 +141,7 @@
 
     .legende-symbol {
     margin-right: 5px;
-    font-size: 1.2rem;
+    font-size: 1.2;
     }
 
     .cluster-icon {
@@ -189,7 +192,7 @@
     }
 
     .toggle-icon {
-    font-size: 1.2em;
+    font-size: 1.2m;
     transition: transform 0.3s;
     }
 
@@ -215,6 +218,27 @@
     .legende-symbol {
     margin-right: 5px;
     font-size: 1.2rem;
+    }
+
+    .icon-110kv {
+      background: #2196f3;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-220kv {
+      background: #e53935;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
 
@@ -312,9 +336,6 @@
   }
 }
   </style>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.css" />
-  <script src="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.js"></script>
 
 <style>
 .windrad-neon circle {
@@ -545,7 +566,10 @@ const miniMap = new L.Control.MiniMap(
     { art: 'Nyctalus noctula', artDeutsch: 'Großer Abendsegler', artgruppe: 'Fledermäuse (Chiroptera)', datum: '2024-07-09', anzahl: 1, lat: 48.765584, lon: 12.381488 },
     { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-03-15', anzahl: 1, lat: 48.78878537571216, lon: 12.35859387721311 },
     { art: 'Ciconia ciconia', artDeutsch: 'Weißstorch', artgruppe: 'Vögel', datum: '2025-05-29', anzahl: 1, lat: 48.72670393477358, lon: 12.401228852428838 },
-    { art: 'Falco tinnunculus', artDeutsch: 'Turmfalke', artgruppe: 'Vögel', datum: '2025-04-20', anzahl: 2, lat: 48.72532719826952, lon: 12.357817747996055 }
+    { art: 'Falco tinnunculus', artDeutsch: 'Turmfalke', artgruppe: 'Vögel', datum: '2025-04-20', anzahl: 2, lat: 48.72532719826952, lon: 12.357817747996055 },
+    { art: 'Falco tinnunculus', artDeutsch: 'Junger Turmfalke', artgruppe: 'Vögel', datum: '2024-06-13', anzahl: 1, lat: 48.725517, lon: 12.358291 },
+    { art: 'Buteo buteo', artDeutsch: 'Mäusebussard', artgruppe: 'Vögel', datum: '2025-04-20', anzahl: 1, lat: 48.725919, lon: 12.358249 },
+    { art: 'Accipiter nisus', artDeutsch: 'Sperber', artgruppe: 'Vögel', datum: '2024-04-12', anzahl: 1, lat: 48.724702, lon: 12.358710 }
     ];
 
     // Windräder-Daten
@@ -601,16 +625,6 @@ const miniMap = new L.Control.MiniMap(
     { nr: 7, lat: 48.85365097290565, lon: 12.367049121749575, farbe: 'brown', park: 'Windpark 9 (ALTERRIC)' },
     ];
 
-    // Daten für Denkmäler
-    const denkmäler = [
-    { name: 'Kirche St. Peter', lat: 48.720, lon: 12.439, beschreibung: 'Gotische Kirche aus dem 15. Jahrhundert' },
-    { name: 'Schloss Mengkofen', lat: 48.722, lon: 12.442, beschreibung: 'Ehemaliges Schloss aus dem 17. Jahrhundert' },
-    { name: 'Kapelle St. Anna', lat: 48.757, lon: 12.363, beschreibung: 'Historische Kapelle aus dem 18. Jahrhundert' },
-    { name: 'Bodendenkmäler Pramersbuch', lat: 48.726, lon: 12.361, beschreibung: 'Archäologische Fundstelle aus der Bronzezeit' },
-    { name: 'Alte Mühle Haader', lat: 48.783, lon: 12.346, beschreibung: 'Historische Wassermühle' },
-    { name: 'Burgstall Tunzenberg', lat: 48.724, lon: 12.478, beschreibung: 'Überreste einer mittelalterlichen Burg' }
-    ];
-
     // Funktion zur Erstellung eines benutzerdefinierten Icons für Windräder
     function createWindradIcon(number, colorClass) {
     return L.divIcon({
@@ -620,6 +634,315 @@ const miniMap = new L.Control.MiniMap(
     iconAnchor: [15, 15],
     });
     }
+
+// Overpass-API Query für 110kV/220kV Umspannwerke in Bayern
+    var overpassUrl = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];area["name"="Bayern"]->.searchArea;(node["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);way["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);relation["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea););out center;';
+
+    // SVG-Icon als Data-URL (Blitzsymbol)
+    function createSvgIcon(color) {
+      var svg = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="12" fill="${color}" stroke="white" stroke-width="2"/>
+          <polygon points="13,3 4,14 11,14 11,21 20,10 13,10" fill="yellow" stroke="black" stroke-width="1"/>
+        </svg>
+      `;
+      return L.icon({
+        iconUrl: 'data:image/svg+xml;base64,' + btoa(svg),
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16],
+        className: ''
+      });
+    }
+
+// Overpass-API Query für 110kV/220kV Umspannwerke in Bayern
+    var overpassUrl = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];area["name"="Bayern"]->.searchArea;(node["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);way["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);relation["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea););out center;';
+ // Layer für Umspannwerke (wird später befüllt)
+    var umspannwerkeLayer = L.layerGroup();
+    // GeoJSON aus Overpass laden und als Layer einfügen
+    fetch(overpassUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Umwandlung von Overpass JSON zu GeoJSON
+        function overpassToGeoJSON(osmData) {
+          var geojson = {
+            type: "FeatureCollection",
+            features: []
+          };
+          osmData.elements.forEach(function(el) {
+            var coords = null;
+            if (el.type === "node") {
+              coords = [el.lon, el.lat];
+            } else if (el.type === "way" && el.center) {
+              coords = [el.center.lon, el.center.lat];
+            } else if (el.type === "relation" && el.center) {
+              coords = [el.center.lon, el.center.lat];
+            }
+            if (coords) {
+              geojson.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: coords
+                },
+                properties: el.tags || {}
+              });
+            }
+          });
+          return geojson;
+        }
+
+        var geojson = overpassToGeoJSON(data);
+
+        // GeoJSON-Layer erzeugen und zum LayerGroup hinzufügen
+        L.geoJSON(geojson, {
+          pointToLayer: function (feature, latlng) {
+            var voltage = feature.properties.voltage || "";
+            var color = voltage.includes("220000") ? "#e53935" : "#2196f3";
+            return L.marker(latlng, { icon: createSvgIcon(color) });
+          },
+         onEachFeature: function (feature, layer) {
+         var name = feature.properties.name || "Umspannwerk";
+         var voltage = feature.properties.voltage || "unbekannt";
+         var voltageText = voltage.replace(/110000/g, "110 kV").replace(/220000/g, "220 kV");
+         layer.bindPopup("<b>" + name + "</b><br>Spannung: " + voltageText);
+          }
+        }).addTo(umspannwerkeLayer);
+      })
+      .catch(err => {
+        alert("Fehler beim Laden der Umspannwerke: " + err);
+      });
+
+      // LayerGroups für die Leitungen
+    var lines110 = L.layerGroup();
+    var lines220 = L.layerGroup();
+
+      // Overpass-API Query für 110kV und 220kV Leitungen in Bayern
+    var overpassUrl = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];area["name"="Bayern"]->.searchArea;(way["power"="line"]["voltage"~"110000"](area.searchArea);way["power"="line"]["voltage"~"220000"](area.searchArea););out geom;';
+
+    fetch(overpassUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Hilfsfunktion: Overpass-JSON zu GeoJSON für Linien
+        function overpassToGeoJSON(osmData, voltageFilter) {
+          var geojson = {
+            type: "FeatureCollection",
+            features: []
+          };
+          osmData.elements.forEach(function(el) {
+            if (el.type === "way" && el.geometry && el.tags && el.tags.voltage && el.tags.voltage.includes(voltageFilter)) {
+              var coords = el.geometry.map(function(pt) { return [pt.lon, pt.lat]; });
+              geojson.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "LineString",
+                  coordinates: coords
+                },
+                properties: el.tags
+              });
+            }
+          });
+          return geojson;
+        }
+
+        // 110kV-Leitungen (blau)
+        var geojson110 = overpassToGeoJSON(data, "110000");
+        L.geoJSON(geojson110, {
+          style: { color: "#2196f3", weight: 3 },
+          onEachFeature: function (feature, layer) {
+            var voltage = feature.properties.voltage.replace(/110000/g, "110 kV");
+            layer.bindPopup("Leitung<br>Spannung: " + voltage);
+          }
+        }).addTo(lines110);
+
+        // 220kV-Leitungen (rot)
+        var geojson220 = overpassToGeoJSON(data, "220000");
+        L.geoJSON(geojson220, {
+          style: { color: "#e53935", weight: 3 },
+          onEachFeature: function (feature, layer) {
+            var voltage = feature.properties.voltage.replace(/220000/g, "220 kV");
+            layer.bindPopup("Leitung<br>Spannung: " + voltage);
+          }
+        }).addTo(lines220);
+      })
+      .catch(err => {
+        alert("Fehler beim Laden der Leitungen: " + err);
+      });
+
+      // LayerGroup für Naturschutzgebiete
+    var nsgLayer = L.layerGroup();
+
+      // Overpass-API Query für Naturschutzgebiete in Bayern
+    var overpassNSGUrl = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];area["name"="Bayern"]->.searchArea;(way["boundary"="protected_area"]["protection_title"~"Naturschutzgebiet"](area.searchArea);relation["boundary"="protected_area"]["protection_title"~"Naturschutzgebiet"](area.searchArea);way["protect_class"="4"](area.searchArea);relation["protect_class"="4"](area.searchArea););out geom;';
+
+fetch(overpassNSGUrl)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Netzwerkantwort war nicht ok: ' + response.statusText);
+    }
+    return response.text(); // erst als Text lesen
+  })
+  .then(text => {
+    try {
+      const data = JSON.parse(text); // versuche JSON zu parsen
+      // ... hier deine Verarbeitung mit data ...
+      function overpassToGeoJSON(osmData) {
+        var geojson = {
+          type: "FeatureCollection",
+          features: []
+        };
+        osmData.elements.forEach(function(el) {
+          if ((el.type === "way" || el.type === "relation") && el.geometry) {
+            var coords = el.geometry.map(function(pt) { return [pt.lon, pt.lat]; });
+            geojson.features.push({
+              type: "Feature",
+              geometry: {
+                type: "Polygon",
+                coordinates: [coords]
+              },
+              properties: el.tags
+            });
+          }
+        });
+        return geojson;
+      }
+      var geojson = overpassToGeoJSON(data);
+      L.geoJSON(geojson, {
+        style: {
+          color: "#0000ff",
+          fillColor: "#0090d3",
+          fillOpacity: 0.5,
+          weight: 1
+        },
+        onEachFeature: function (feature, layer) {
+          var name = feature.properties.name || "Naturschutzgebiet";
+          layer.bindPopup("<b>" + name + "</b>");
+        }
+      }).addTo(nsgLayer);
+    } catch (e) {
+      alert("Fehler beim Parsen der Naturschutzgebiete: " + e.message);
+      console.error("Antworttext:", text);
+    }
+  })
+  .catch(err => {
+    alert("Fehler beim Laden der Naturschutzgebiete: " + err.message);
+  });
+
+// Layer für Denkmäler aus OSM
+var denkmaleLayer = L.layerGroup();
+var loadedBounds = null;
+var isLoading = false;
+
+function loadDenkmaeler() {
+  if (isLoading) return;
+
+  var bounds = map.getBounds();
+  var south = bounds.getSouth();
+  var west = bounds.getWest();
+  var north = bounds.getNorth();
+  var east = bounds.getEast();
+
+  // Prüfen ob schon geladen
+  if (loadedBounds && loadedBounds.contains(bounds)) {
+    return;
+  }
+
+  isLoading = true;
+
+  var overpassQuery = `[out:json][timeout:15];
+    (
+      node["historic"](${south},${west},${north},${east});
+      way["historic"](${south},${west},${north},${east});
+      relation["historic"](${south},${west},${north},${east});
+    );
+    out center;`;
+
+  var overpassUrl = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
+
+  fetch(overpassUrl)
+    .then(response => response.json())
+    .then(data => {
+      // Bestehende Marker löschen
+      denkmaleLayer.clearLayers();
+
+      var geojson = overpassToGeoJSON(data);
+
+      L.geoJSON(geojson, {
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, {
+            icon: L.divIcon({
+              className: 'denkmal-icon',
+              html: '<span style="font-size: 25px;">🏛️</span>',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15]
+            })
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          var props = feature.properties || {};
+          var name = props.name || "Denkmal";
+          var ref = props.ref || props['ref:denkmal'] || "keine Aktennummer";
+          var heritage = props.heritage || "kein Denkmalstatus";
+          var description = props.description || "";
+          var lat = feature.geometry.coordinates[1];
+          var lon = feature.geometry.coordinates[0];
+
+          var denkmalatlasUrl = `https://geoportal.bayern.de/denkmalatlas/index.html?zoom=15&lat=${lat}&lon=${lon}`;
+
+          var popupContent = `<b>${name}</b><br>
+                              Aktennummer: ${ref}<br>
+                              Status: ${heritage}<br>
+                              ${description}<br>
+                              <a href="${denkmalatlasUrl}" target="_blank" rel="noopener noreferrer">Denkmalatlas Bayern</a>`;
+
+          layer.bindPopup(popupContent);
+        }
+      }).addTo(denkmaleLayer);
+
+      loadedBounds = bounds;
+      isLoading = false;
+    })
+    .catch(err => {
+      console.error("Fehler beim Laden der Denkmäler:", err);
+      isLoading = false;
+    });
+}
+
+function overpassToGeoJSON(osmData) {
+  var geojson = {
+    type: "FeatureCollection",
+    features: []
+  };
+  osmData.elements.forEach(function(el) {
+    var coords = null;
+    if (el.type === "node") {
+      coords = [el.lon, el.lat];
+    } else if ((el.type === "way" || el.type === "relation") && el.center) {
+      coords = [el.center.lon, el.center.lat];
+    }
+    if (coords) {
+      geojson.features.push({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: coords
+        },
+        properties: el.tags || {}
+      });
+    }
+  });
+  return geojson;
+}
+
+// Event Listener für Kartenverschiebung
+map.on('moveend', function() {
+  if (map.getZoom() >= 12) { // Nur ab bestimmtem Zoom-Level laden
+    loadDenkmaeler();
+  } else {
+    denkmaleLayer.clearLayers();
+    loadedBounds = null;
+  }
+});
 
     // Funktion zur Erstellung eines benutzerdefinierten Icons für verschiedene Artgruppen
     function createArtenIcon(tier) {
@@ -666,16 +989,6 @@ const miniMap = new L.Control.MiniMap(
     });
     }
 
-    // Funktion zur Erstellung eines benutzerdefinierten Icons für Denkmäler
-    function createDenkmalIcon() {
-    return L.divIcon({
-    className: 'denkmal-icon',
-    html: '🏛️',
-    iconSize: [30, 30],
-    iconAnchor: [15, 15]
-    });
-    }
-
     // Layer für Gruppierung erstellen
     const windräderLayer = L.layerGroup();
     const vögelLayer = L.layerGroup();
@@ -683,7 +996,6 @@ const miniMap = new L.Control.MiniMap(
     const pflanzenLayer = L.layerGroup();
     const reptilienLayer = L.layerGroup();
     const insektenLayer = L.layerGroup();
-    const denkmälerLayer = L.layerGroup();
 
     // Marker für Windräder setzen
     windräder.forEach(wr => {
@@ -735,26 +1047,65 @@ const miniMap = new L.Control.MiniMap(
     marker.addTo(layer);
     });
 
-    // Denkmäler-Marker hinzufügen
-    denkmäler.forEach(denkmal => {
-    L.marker([denkmal.lat, denkmal.lon], {
-    icon: createDenkmalIcon()
-    })
-    .addTo(denkmälerLayer)
-    .bindPopup(`<strong>${denkmal.name}</strong><br>${denkmal.beschreibung}`);
-    });
 
-    // Nur die Windräder-Layergruppe zur Karte hinzufügen
-    windräderLayer.addTo(map);
-
-    // WMS-Layer für Windräder aus den Metadaten hinzufügen
-    const windraederWMSLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/windenergieanlagen?", {
+// WMS-Layer für Windräder
+const windraederWMSLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/windenergieanlagen?", {
     layers: 'windenergieanlagen',
     format: 'image/png',
     transparent: true,
     version: '1.3.0',
     attribution: 'Bayerisches Landesamt für Umwelt'
-    });
+});
+
+// GetFeatureInfo für Popups - korrigierte Version
+map.on('click', function(e) {
+    // Nur ausführen wenn der WMS-Layer aktiv ist
+    if (!map.hasLayer(windraederWMSLayer)) return;
+
+    const latlng = e.latlng;
+    const size = map.getSize();
+    const bounds = map.getBounds();
+
+    // Parameter für GetFeatureInfo-Request (WMS 1.3.0)
+    const params = {
+        request: 'GetFeatureInfo',
+        service: 'WMS',
+        crs: 'EPSG:4326', // Für Version 1.3.0 verwenden wir 'crs' statt 'srs'
+        version: '1.3.0',
+        format: 'image/png',
+        // Für EPSG:4326 in WMS 1.3.0 ist die Reihenfolge lat,lon statt lon,lat
+        bbox: bounds.getWest() + ',' + bounds.getSouth() + ',' + bounds.getEast() + ',' + bounds.getNorth(),
+        height: size.y,
+        width: size.x,
+        layers: 'windenergieanlagen',
+        query_layers: 'windenergieanlagen',
+        info_format: 'text/html',
+        i: Math.round(e.containerPoint.x), // Für Version 1.3.0 verwenden wir 'i' statt 'x'
+        j: Math.round(e.containerPoint.y)  // Für Version 1.3.0 verwenden wir 'j' statt 'y'
+    };
+
+    // URL zusammenbauen
+    const url = "https://www.lfu.bayern.de/gdi/wms/energieatlas/windenergieanlagen?" +
+                Object.keys(params).map(key => key + '=' + encodeURIComponent(params[key])).join('&');
+
+    console.log('GetFeatureInfo URL:', url); // Zum Debuggen
+
+    // Request ausführen
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            console.log('Response:', data); // Zum Debuggen
+            if (data && data.trim() !== '' && !data.includes('no features')) {
+                L.popup()
+                    .setLatLng(latlng)
+                    .setContent(data)
+                    .openOn(map);
+            }
+        })
+        .catch(error => {
+            console.error('Fehler beim Abrufen der Feature-Informationen:', error);
+        });
+});
 
 	  // WMS-Layer für Windvorranggebiete aus den Metadaten hinzufügen
     const windvorranggebiete = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/planungsgrundlagen_wind?", {
@@ -765,19 +1116,14 @@ const miniMap = new L.Control.MiniMap(
     attribution: 'Bayerisches Landesamt für Umwelt'
 });
 
-const biotopLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/natur/biotopkartierung?", {
-    layers: 'biotop_flaeche,biotop_linie,biotop_punkt',
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.1',
-    attribution: "Biotopkartierung: © Bayerisches Landesamt für Umwelt"
-});
-
-const naturschutzLayer = L.tileLayer.wms("https://geodienste.bfn.de/ogc/bfn/schutzgebiete", {
-    layers: 'bfn:Naturschutzgebiete',
-    format: 'image/png',
-    transparent: true,
-    attribution: "Daten: © BfN"
+// Biotopkartierung WMS-Layer
+    var biotopWMS = L.tileLayer.wms('https://www.lfu.bayern.de/gdi/wms/natur/biotopkartierung?', {
+      layers: 'default,bio_sbk,bio_abk',
+      format: 'image/png',
+      transparent: true,
+      version: '1.1.1', // oder 1.3.0, je nach Dienst
+      crs: L.CRS.EPSG3857, // Leaflet verwendet standardmäßig EPSG:3857
+      attribution: '© LfU Bayern'
 });
 
 // WMS-Layer für Warngebiete auf Gemeindebasis
@@ -866,7 +1212,7 @@ const waldfunktionWMS = L.tileLayer.wms('https://www.fovgis.bayern.de/arcgis/ser
     <span style="background: blue; width: 12px; height: 12px; display: inline-block; border: 1px solid #000000;"></span> Windpark 11
     </div>
     <div class="legende-item">
-    <img src="windradicon.png" width="17">&nbsp;Vorhandene Windräder
+    <img src="kartendaten/images/windradicon.png" width="17">&nbsp;Vorhandene Windräder
     </div>
 	  	    <p>----Kartenmarkierungen----</p>
     <div class="legende-item">
@@ -953,7 +1299,26 @@ const waldfunktionWMS = L.tileLayer.wms('https://www.fovgis.bayern.de/arcgis/ser
     maxZoom: 17,
     attribution: 'Kartendaten: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, SRTM | Darstellung: &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
   });
-
+  const googleStreets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '&copy; Google'
+  });
+  const googleSatellite = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '&copy; Google'
+  });
+  const googleHybrid = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '&copy; Google'
+  });
+  const googleTerrain = L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    attribution: '&copy; Google'
+  });
     const esriLabels = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Labels © Esri',
     maxZoom: 19
@@ -964,6 +1329,11 @@ const waldfunktionWMS = L.tileLayer.wms('https://www.fovgis.bayern.de/arcgis/ser
 
     // Standardkarte
     osm.addTo(map);
+    windräderLayer.addTo(map);
+    //umspannwerkeLayer.addTo(map);
+    //lines110.addTo(map);
+    //lines220.addTo(map);
+
 
 // Layer-Control mit allen Layern
 L.control.ruler().addTo(map);
@@ -972,24 +1342,32 @@ L.control.layers({
   "Satelliten Karte": esriSatWithLabels,
   "Topografische Karte": opentopo,
   "Carto Light": cartoLight,
-  "Carto Dark": cartoDark
+  "Carto Dark": cartoDark,
+  "Google Streets": googleStreets,
+  "Google Satellite": googleSatellite,
+  "Google Hybrid": googleHybrid,
+  "Google Terrain": googleTerrain,
+
 }, {
   "Geplante Windräder": windräderLayer,
   "Vorhandene Windräder": windraederWMSLayer,
-  "Windvorranggebiete": windvorranggebiete,
+  "Windvorranggebiete (Ladezeit)": windvorranggebiete,
   "Vögel": vögelLayer,
   "Pflanzen": pflanzenLayer,
   "Reptilien": reptilienLayer,
   "Insekten": insektenLayer,
   "Fledermäuse": säugetierLayer,
-  "Denkmäler": denkmälerLayer,
+  "Denkmäler": denkmaleLayer,
   "Windwarnungen Gemeinden": dwdWarnGebieteGemeinden,
   "Windwarnungen Kreise": dwdWarnGebieteKreise,
-  "̶N̶a̶t̶u̶r̶s̶c̶h̶u̶t̶z̶g̶e̶b̶i̶e̶t̶e̶": naturschutzLayer,
-  "̶B̶i̶o̶t̶o̶p̶k̶a̶r̶t̶i̶e̶r̶u̶n̶g̶ ̶B̶a̶y̶e̶r̶n̶": biotopLayer,
-  "̶S̶t̶a̶a̶t̶s̶f̶o̶r̶s̶t̶e̶n̶ ̶(̶B̶a̶y̶S̶F̶)̶": staatswaldLayer,
-  "̶W̶a̶l̶d̶f̶u̶n̶k̶t̶i̶o̶n̶s̶k̶a̶r̶t̶e̶" : waldfunktionWMS,
-  "̶W̶i̶n̶d̶g̶e̶s̶c̶h̶w̶i̶n̶d̶i̶g̶k̶e̶i̶t̶e̶n̶": windatlas
+  "Umspannwerke 110kV/220kV": umspannwerkeLayer,
+  "Hochspannungsleitungen 110kV": lines110,
+  "Hochspannungsleitungen 220 kV": lines220,
+  "Naturschutzgebiete": nsgLayer,
+  //"̶B̶i̶o̶t̶o̶p̶k̶a̶r̶t̶i̶e̶r̶u̶n̶g̶ ̶B̶a̶y̶e̶r̶n̶": biotopWMS,
+  //"̶S̶t̶a̶a̶t̶s̶f̶o̶r̶s̶t̶e̶n̶ ̶(̶B̶a̶y̶S̶F̶)̶": staatswaldLayer,
+  //"̶W̶a̶l̶d̶f̶u̶n̶k̶t̶i̶o̶n̶s̶k̶a̶r̶t̶e̶" : waldfunktionWMS,
+  //"̶W̶i̶n̶d̶g̶e̶s̶c̶h̶w̶i̶n̶d̶i̶g̶k̶e̶i̶t̶e̶n̶": windatlas
 }, {
   collapsed: true // Optional: Control standardmäßig ausgeklappt
 }).addTo(map);
