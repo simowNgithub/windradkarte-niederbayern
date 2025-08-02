@@ -9,10 +9,15 @@ Karten:
 - Topografische Karte
 - Carto Light
 - Carto Dark
+- Google Streets
+- Google Terrain
+- Google Satelite
+- Google Hybrid
 
 # Features
 - Zoom
-- Abstandsmessung
+- Entfernungsmessung
+- Flächenmessung
 - Koordinatenanzeige (NEU)
 - Suche nach Adressen/Koordinaten (NEU)
 - Rechtsklickmenü (NEU)
@@ -28,8 +33,11 @@ Karten:
 - Ein- / Ausblenden von Denkmäler
 - Ein- / Ausblenden von Fledermäuse
 - Ein- / Ausblenden von Pflanzen
+- Ein- / Ausblenden von Hochspannungsleitungen 110kV
+- Ein- / Ausblenden von Hochspannungsleitungen 220kV
+- Ein- / Ausblenden von Umspannwerken 110kV/220kV
+- Ein- / Ausblenden von Naturschutzgebieten
 - Ein- / Ausblenden von Biotopen (GEPLANT)
-- Ein- / Ausblenden von Naturschutzgebieten (GEPLANT)
 - Ein- / Ausblenden von Staatsforsten (GEPLANT)
 - Ein- / Ausblenden von Waldfunktionskarte (GEPLANT)
 - Ein- / Ausblenden von Windgeschwindigkeiten (GEPLANT)
