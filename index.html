@@ -2,354 +2,50 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Windparks und Artenvorkommen</title>
+  <title>Interaktive Karte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="./kartendaten/leaflet.css" />
+  <link rel="stylesheet" href= "kartendaten/leaflet.css" />
   <!-- Leaflet Draw CSS -->
-  <link rel="stylesheet" href="./kartendaten/leaflet.draw.css" />
+  <link rel="stylesheet" href="kartendaten/leaflet.draw.css" />
   <!-- Leaflet JS -->
-  <script src="./kartendaten/leaflet.js"></script>
+  <script src="kartendaten/leaflet.js"></script>
   <!-- Leaflet Draw JS -->
   <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
   <!-- Leaflet WFS Plugin -->
-  <script src="./kartendaten/leaflet-wfst.min.js"></script>
+  <script src="kartendaten/leaflet-wfst.min.js"></script>
  <!-- Leaflet Minimap JS -->
-  <script src="./kartendaten/Control.MiniMap.min.js"></script>
+  <script src="kartendaten/Control.MiniMap.min.js"></script>
   <!-- Leaflet Minimap CSS -->
-  <link rel="stylesheet" href="./kartendaten/Control.MiniMap.min.css" />
+  <link rel="stylesheet" href="kartendaten/Control.MiniMap.min.css" />
 
-  <link rel="stylesheet" href="./kartendaten/leaflet-ruler.css" />
-  <script src="./kartendaten/leaflet-ruler.js"></script>
+  <link rel="stylesheet" href="kartendaten/leaflet-measure.css" />
+  <script src="kartendaten/leaflet-measure.js"></script>
 
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-
-  <style>
-    #map {
-    height: 100vh;
-    width: 100%;
-    }
-    .windrad-marker {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    font-size: 0.9rem;
-    font-weight: bold;
-    text-align: center;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-    }
-    .windrad-red { background-color: red; color: white; border: 1px solid #000000; }
-    .windrad-yellow { background-color: yellow; color: black; border: 1px solid #000000; }
-    .windrad-blue { background-color: blue; color: white; border: 1px solid #000000; }
-    .windrad-gray { background-color: gray; color: white; border: 1px solid #000000; }
-    .windrad-orange { background-color: orange; color: black; border: 1px solid #000000; }
-    .windrad-white { background-color: white; color: black; border: 1px solid #000000; }
-    .windrad-black { background-color: black; color: white; border: 1px solid #000000; }
-    .windrad-green { background-color: #90EE90; color: black; border: 1px solid #000000; }
-    .windrad-purple { background-color: #DDA0DD; color: black; border: 1px solid #000000; }
-    .windrad-lightblue { background-color: #ADD8E6; color: black; border: 1px solid #000000; }
-    .windrad-brown { background-color: #964B00; color: white; border: 1px solid #000000; }
-
-    .ort-label {
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: black;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 2px 5px;
-    border-radius: 3px;
-    border: 1px solid gray;
-    }
-
-    .vogel-icon {
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-    background: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-block;
-    }
-
-    .pflanze-icon {
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-    background: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-block;
-    }
-
-    .reptil-icon {
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-    background: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-block;
-    }
-
-    .insekt-icon {
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-    background: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-block;
-    }
-
-    .fledermaus-icon {
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-    background: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-block;
-    }
-
-    .legende {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.3);
-    z-index: 1000;
-    max-height: 300px;
-    overflow-y: auto;
-    }
-
-    .legende-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 2px 0;
-    }
-
-    .legende-farbe {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-right: 5px;
-    display: inline-block;
-    }
-
-    .legende-symbol {
-    margin-right: 5px;
-    font-size: 1.2;
-    }
-
-    .cluster-icon {
-    background-color: #fff;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
-    font-weight: bold;
-    border: 2px solid #000;
-    }
-
-    /* Legende auf der linken Seite */
-    .legend-container {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    z-index: 1000;
-    max-height: 100vh;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    }
-
-    .legend-toggle {
-    background: white;
-    padding: 10px 15px;
-    border-radius: 5px 5px 0 0;
-    box-shadow: 0 0 5px rgba(0,0,0,0.3);
-    cursor: default;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    }
-
-    .legend-content {
-    background: white;
-    padding: 10px;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.3);
-    max-height: calc(80vh - 40px);
-    overflow-y: auto;
-    }
-
-    .legend-content.collapsed {
-    display: none;
-    }
-
-    .toggle-icon {
-    font-size: 1.2m;
-    transition: transform 0.3s;
-    }
-
-    .toggle-icon.collapsed {
-    transform: rotate(-90deg);
-    }
-
-    .legende-item {
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    }
-
-    .legende-farbe {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-right: 5px;
-    display: inline-block;
-    }
-
-    .legende-symbol {
-    margin-right: 5px;
-    font-size: 1.2rem;
-    }
-
-    .icon-110kv {
-      background: #2196f3;
-      border-radius: 50%;
-      border: 2px solid #fff;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .icon-220kv {
-      background: #e53935;
-      border-radius: 50%;
-      border: 2px solid #fff;
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  <!-- Leaflet GeometryUtil for area calculations -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-geometryutil@0.10.1/src/leaflet.geometryutil.js"></script>
+																									
+<script src="https://unpkg.com/osmtogeojson@3.0.0-beta.4/osmtogeojson.js"></script>
 
 
-    /* Koordinatenanzeige rechts unten */
-    .coordinates-display {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 8px 12px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.3);
-    z-index: 1000;
-    font-family: monospace;
-    font-size: 12px;
-    border: 1px solid #ccc;
-    }
+<!-- Eigene Styles -->
+  <link rel="stylesheet" href="kartendaten/styles.css" />
 
-    /* Zoom-Buttons rechts unten (über Koordinaten) */
-    .leaflet-control-zoom {
-    position: absolute !important;
-    bottom: 120px !important;
-    right: 20px !important;
-    top: auto !important;
-    left: auto !important;
-    }
-    #map {
-  cursor: pointer !important;
-    }
-      #address {
-    width: 250px;
-    padding: 5px;
-  }
-
-  #address-search-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    display: block !important;
-    z-index: 9999;
-  }
-    /* Kontextmenü-Styles */
-  #context-menu {
-    position: absolute;
-    display: none;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    min-width: 220px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-    z-index: 10000;
-    font-family: sans-serif;
-  }
-
-  #context-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 4px 0;
-  }
-
-  #context-menu ul li {
-    padding: 8px 15px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s;
-  }
-
-  #context-menu ul li:hover {
-    background-color: #0062cc;
-    color: white;
-  }
-
-    .map-direction {
-    position: absolute;
-    font-weight: bold;
-    background: rgba(255,255,255,0.7);
-    padding: 2px 6px;
-    border-radius: 3px;
-    z-index: 1000;
-    pointer-events: none;
-  }
-  .north { top: 10px; left: 50%; transform: translateX(-50%); }
-  .south { bottom: 10px; left: 50%; transform: translateX(-50%); }
-  .east { right: 10px; top: 50%; transform: translateY(-50%); }
-  .west { left: 10px; top: 50%; transform: translateY(-50%); }
-
-    /* Minimap auf Mobilgeräten ausblenden */
-  @media (max-width: 768px) {
-  .leaflet-control-minimap {
-    display: none !important;
-  }
-}
-  </style>
-
-<style>
-.windrad-neon circle {
-    filter: drop-shadow(0 0 4px currentColor)
-    drop-shadow(0 0 8px currentColor)
-    drop-shadow(0 0 12px currentColor);
-}
-</style>
 </head>
 <body>
 <div id="address-search-container">
   <input type="text" id="address" placeholder="Adressen/Koordinaten Suche">
   <button onclick="searchAndAddMarker()">Suchen</button>
 </div>
+
+  <!-- Mess-Tools Panel -->
+  <div class="measure-tools">
+    <h4>🔧 Messen</h4>
+    <button id="measureDistance">📏 Entfernung</button>
+    <button id="measureArea">📐 Fläche</button>
+    <button id="clearMeasure">🗑️ Löschen</button>
+    <div id="measureResult" class="measure-result"></div>
+  </div>
 
   <div id="map"></div>
 
@@ -541,7 +237,6 @@ const miniMap = new L.Control.MiniMap(
       coordinatesDiv.innerHTML = `Lat: ${lat}, Lon: ${lng}`;
     });
 
-    // Daten aus Excel-Datei - alle Koordinaten sind jetzt WGS84
     const tiereDaten = [
     { art: 'Digitalis purpurea', artDeutsch: 'Roter Fingerhut', artgruppe: 'Höhere Pflanzen', datum: '2020-06-16', anzahl: 100, lat: 48.765864, lon: 12.395582 },
     { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2024-09-11', anzahl: 2, lat: 48.763009, lon: 12.379937 },
@@ -566,10 +261,19 @@ const miniMap = new L.Control.MiniMap(
     { art: 'Nyctalus noctula', artDeutsch: 'Großer Abendsegler', artgruppe: 'Fledermäuse (Chiroptera)', datum: '2024-07-09', anzahl: 1, lat: 48.765584, lon: 12.381488 },
     { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-03-15', anzahl: 1, lat: 48.78878537571216, lon: 12.35859387721311 },
     { art: 'Ciconia ciconia', artDeutsch: 'Weißstorch', artgruppe: 'Vögel', datum: '2025-05-29', anzahl: 1, lat: 48.72670393477358, lon: 12.401228852428838 },
+{ art: 'Ciconia ciconia', artDeutsch: 'Weißstorch', artgruppe: 'Vögel', datum: '2025-05-29', anzahl: 1, lat: 48.751585, lon: 12.195762 },
     { art: 'Falco tinnunculus', artDeutsch: 'Turmfalke', artgruppe: 'Vögel', datum: '2025-04-20', anzahl: 2, lat: 48.72532719826952, lon: 12.357817747996055 },
     { art: 'Falco tinnunculus', artDeutsch: 'Junger Turmfalke', artgruppe: 'Vögel', datum: '2024-06-13', anzahl: 1, lat: 48.725517, lon: 12.358291 },
     { art: 'Buteo buteo', artDeutsch: 'Mäusebussard', artgruppe: 'Vögel', datum: '2025-04-20', anzahl: 1, lat: 48.725919, lon: 12.358249 },
-    { art: 'Accipiter nisus', artDeutsch: 'Sperber', artgruppe: 'Vögel', datum: '2024-04-12', anzahl: 1, lat: 48.724702, lon: 12.358710 }
+    { art: 'Accipiter nisus', artDeutsch: 'Sperber', artgruppe: 'Vögel', datum: '2024-04-12', anzahl: 1, lat: 48.724702, lon: 12.358710 },
+    { art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-06-14', anzahl: 1, lat: 48.7246645, lon: 12.3590508 },
+    { art: 'Falco tinnunculus', artDeutsch: 'Turmfalke', artgruppe: 'Vögel', datum: '2025-06-16', anzahl: 6, lat: 48.776389, lon: 12.154535 },
+    { art: 'Falco tinnunculus', artDeutsch: 'Turmfalke', artgruppe: 'Vögel', datum: '2025-06-16', anzahl: 4, lat: 48.777033, lon: 12.155758 },
+{ art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-07-13', anzahl: 2, lat: 48.724650, lon: 12.359903 },
+{ art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-07-12', anzahl: 1, lat: 48.724024, lon: 12.356926 },
+{ art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-07-10', anzahl: 1, lat: 48.724757, lon: 12.363278 },
+{ art: 'Milvus milvus', artDeutsch: 'Rotmilan', artgruppe: 'Vögel', datum: '2025-07-10', anzahl: 1, lat: 48.756173, lon: 12.167006 },
+{ art: 'Ciconia ciconia', artDeutsch: 'Weißstorch', artgruppe: 'Vögel', datum: '2025-05-29', anzahl: 2, lat: 48.773099, lon: 12.183643 },
     ];
 
     // Windräder-Daten
@@ -584,23 +288,24 @@ const miniMap = new L.Control.MiniMap(
     { nr: 4, lat: 48.74896408408048, lon: 12.334664962515475, farbe: 'blue', park: 'Windpark 2 (Primus)' },
     { nr: 5, lat: 48.74110281366956, lon: 12.341455859921119, farbe: 'blue', park: 'Windpark 2 (Primus)' },
     { nr: 6, lat: 48.7338913546195, lon: 12.34486206232525, farbe: 'blue', park: 'Windpark 2 (Primus)' },
-    { nr: 1, lat: 48.78194044369739, lon: 12.38348704533361, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 2, lat: 48.783322137113025, lon: 12.399488814496232, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 3, lat: 48.77871310932095, lon: 12.392619462535864, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 4, lat: 48.77975104308274, lon: 12.403046353688252, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 5, lat: 48.76878519889439, lon: 12.391695832090031, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 6, lat: 48.767735099946115, lon: 12.40134333364904, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 7, lat: 48.756218042207614, lon: 12.389455141070286, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 8, lat: 48.7479530723291, lon: 12.38826437273897, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
-    { nr: 9, lat: 48.771020426205894, lon: 12.412059762345175, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 1, lat: 48.78088, lon: 12.39447, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 2, lat: 48.77864, lon: 12.40066, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 3, lat: 48.77760, lon: 12.38326, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 4, lat: 48.77349, lon: 12.39594, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 5, lat: 48.76880, lon: 12.39526, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 6, lat: 48.77131, lon: 12.40833, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 7, lat: 48.75467, lon: 12.38984, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 8, lat: 48.75001, lon: 12.38972, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
+{ nr: 9, lat: 48.74054, lon: 12.35948, farbe: 'red', park: 'Windpark 3 (Herrmann)' },
     { nr: 1, lat: 48.750637268186914, lon: 12.155367023131237, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
     { nr: 2, lat: 48.75706065405235, lon: 12.152498571257748, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
     { nr: 3, lat: 48.76132119693771, lon: 12.149282746603689, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
     { nr: 4, lat: 48.76602828074706, lon: 12.152499212424551, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
     { nr: 5, lat: 48.76124314532713, lon: 12.164311967658676, farbe: 'gray', park: 'Windpark 4 (JUWI)' },
-    { nr: 1, lat: 48.713636152541376, lon: 12.493879926994746, farbe: 'white', park: 'Windpark 5 (JUWI)' },
-    { nr: 2, lat: 48.71665548083341, lon: 12.485683436229882, farbe: 'white', park: 'Windpark 5 (JUWI)' },
-    { nr: 3, lat: 48.720373016398355, lon: 12.492882029639608, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+	
+	{ nr: 1, lat: 48.723636, lon: 12.489175, farbe: 'white', park: 'Windpark 5 (JUWI)' },	
+    { nr: 2, lat: 48.719056, lon: 12.487258, farbe: 'white', park: 'Windpark 5 (JUWI)' },
+    { nr: 3, lat: 48.716803, lon: 12.492106, farbe: 'white', park: 'Windpark 5 (JUWI)' },
     { nr: 1, lat: 48.8440813247077, lon: 12.359145485472046, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
     { nr: 2, lat: 48.845555368316504, lon: 12.3521541576846, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
     { nr: 3, lat: 48.83992829061574, lon: 12.35311653288946, farbe: 'orange', park: 'Windpark 6 (UNENDLICH ENERGIE)' },
@@ -633,8 +338,9 @@ const miniMap = new L.Control.MiniMap(
     iconSize: [20, 20],
     iconAnchor: [15, 15],
     });
-    }
+    }				  
 
+						  
 // Overpass-API Query für 110kV/220kV Umspannwerke in Bayern
     var overpassUrl = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];area["name"="Bayern"]->.searchArea;(node["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);way["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);relation["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea););out center;';
 
@@ -655,14 +361,52 @@ const miniMap = new L.Control.MiniMap(
       });
     }
 
-// Overpass-API Query für 110kV/220kV Umspannwerke in Bayern
-    var overpassUrl = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];area["name"="Bayern"]->.searchArea;(node["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);way["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea);relation["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](area.searchArea););out center;';
- // Layer für Umspannwerke (wird später befüllt)
-    var umspannwerkeLayer = L.layerGroup();
-    // GeoJSON aus Overpass laden und als Layer einfügen
-    fetch(overpassUrl)
-      .then(response => response.json())
-      .then(data => {
+// Layer für Umspannwerke (wird später befüllt)
+var umspannwerkeLayer = L.layerGroup();
+var loadedUmspannwerkeBounds = null;
+var isLoadingUmspannwerke = false;
+
+function loadUmspannwerke() {
+  if (isLoadingUmspannwerke) return;
+
+  var bounds = map.getBounds();
+  var south = bounds.getSouth();
+  var west = bounds.getWest();
+  var north = bounds.getNorth();
+  var east = bounds.getEast();
+
+  // Prüfen ob schon geladen
+  if (loadedUmspannwerkeBounds && loadedUmspannwerkeBounds.contains(bounds)) {
+    return;
+  }
+
+  isLoadingUmspannwerke = true;
+
+  // Query nur für sichtbaren Bereich
+  var overpassQuery = `[out:json][timeout:15];
+    (
+    node["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](${south},${west},${north},${east});
+    way["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](${south},${west},${north},${east});
+    relation["power"="substation"]["voltage"~"^(110000|220000)(;|$)"](${south},${west},${north},${east});
+    );
+    out center;`;
+
+  var overpassUrl = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
+
+  fetch(overpassUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Netzwerkantwort war nicht ok: ' + response.statusText);
+      }
+      return response.text();
+    })
+    .then(text => {
+      try {
+        const data = JSON.parse(text);
+
+        // Bestehende Marker löschen
+        umspannwerkeLayer.clearLayers();
+
         // Umwandlung von Overpass JSON zu GeoJSON
         function overpassToGeoJSON(osmData) {
           var geojson = {
@@ -701,28 +445,84 @@ const miniMap = new L.Control.MiniMap(
             var color = voltage.includes("220000") ? "#e53935" : "#2196f3";
             return L.marker(latlng, { icon: createSvgIcon(color) });
           },
-         onEachFeature: function (feature, layer) {
-         var name = feature.properties.name || "Umspannwerk";
-         var voltage = feature.properties.voltage || "unbekannt";
-         var voltageText = voltage.replace(/110000/g, "110 kV").replace(/220000/g, "220 kV");
-         layer.bindPopup("<b>" + name + "</b><br>Spannung: " + voltageText);
+          onEachFeature: function (feature, layer) {
+            var name = feature.properties.name || "Umspannwerk";
+            var voltage = feature.properties.voltage || "unbekannt";
+            var voltageText = voltage.replace(/110000/g, "110 kV").replace(/220000/g, "220 kV");
+            layer.bindPopup("<b>" + name + "</b><br>Spannung: " + voltageText);
           }
         }).addTo(umspannwerkeLayer);
-      })
-      .catch(err => {
-        alert("Fehler beim Laden der Umspannwerke: " + err);
-      });
 
-      // LayerGroups für die Leitungen
-    var lines110 = L.layerGroup();
-    var lines220 = L.layerGroup();
+        loadedUmspannwerkeBounds = bounds;
+        isLoadingUmspannwerke = false;
+      } catch (e) {
+        console.error("Fehler beim Parsen der Umspannwerke:", e.message);
+        console.error("Antworttext:", text.substring(0, 200) + "...");
+        isLoadingUmspannwerke = false;
+      }
+    })
+    .catch(err => {
+      console.error("Fehler beim Laden der Umspannwerke:", err);
+      isLoadingUmspannwerke = false;
+    });
+}
 
-      // Overpass-API Query für 110kV und 220kV Leitungen in Bayern
-    var overpassUrl = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];area["name"="Bayern"]->.searchArea;(way["power"="line"]["voltage"~"110000"](area.searchArea);way["power"="line"]["voltage"~"220000"](area.searchArea););out geom;';
+// Event Listener für Kartenverschiebung
+map.on('moveend', function() {
+  if (map.getZoom() >= 10) { // Nur ab bestimmtem Zoom-Level laden
+    loadUmspannwerke();
+  } else {
+    umspannwerkeLayer.clearLayers();
+    loadedUmspannwerkeBounds = null;
+  }
+});
+// LayerGroups für die Leitungen
+var lines110 = L.layerGroup();
+var lines220 = L.layerGroup();
+var loadedLinesBounds = null;
+var isLoadingLines = false;
 
-    fetch(overpassUrl)
-      .then(response => response.json())
-      .then(data => {
+function loadStromleitungen() {
+  if (isLoadingLines) return;
+
+  var bounds = map.getBounds();
+  var south = bounds.getSouth();
+  var west = bounds.getWest();
+  var north = bounds.getNorth();
+  var east = bounds.getEast();
+
+  // Prüfen ob schon geladen
+  if (loadedLinesBounds && loadedLinesBounds.contains(bounds)) {
+    return;
+  }
+
+  isLoadingLines = true;
+
+  // Query nur für sichtbaren Bereich
+  var overpassQuery = `[out:json][timeout:15];
+    (
+    way["power"="line"]["voltage"~"110000"](${south},${west},${north},${east});
+    way["power"="line"]["voltage"~"220000"](${south},${west},${north},${east});
+    );
+    out geom;`;
+
+  var overpassUrl = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
+
+  fetch(overpassUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Netzwerkantwort war nicht ok: ' + response.statusText);
+      }
+      return response.text();
+    })
+    .then(text => {
+      try {
+        const data = JSON.parse(text);
+
+        // Bestehende Linien löschen
+        lines110.clearLayers();
+        lines220.clearLayers();
+
         // Hilfsfunktion: Overpass-JSON zu GeoJSON für Linien
         function overpassToGeoJSON(osmData, voltageFilter) {
           var geojson = {
@@ -750,7 +550,7 @@ const miniMap = new L.Control.MiniMap(
         L.geoJSON(geojson110, {
           style: { color: "#2196f3", weight: 3 },
           onEachFeature: function (feature, layer) {
-            var voltage = feature.properties.voltage.replace(/110000/g, "110 kV");
+            var voltage = feature.properties.voltage.replace(/110000/g, "110 kV");
             layer.bindPopup("Leitung<br>Spannung: " + voltage);
           }
         }).addTo(lines110);
@@ -760,14 +560,34 @@ const miniMap = new L.Control.MiniMap(
         L.geoJSON(geojson220, {
           style: { color: "#e53935", weight: 3 },
           onEachFeature: function (feature, layer) {
-            var voltage = feature.properties.voltage.replace(/220000/g, "220 kV");
+            var voltage = feature.properties.voltage.replace(/220000/g, "220 kV");
             layer.bindPopup("Leitung<br>Spannung: " + voltage);
           }
         }).addTo(lines220);
-      })
-      .catch(err => {
-        alert("Fehler beim Laden der Leitungen: " + err);
-      });
+
+        loadedLinesBounds = bounds;
+        isLoadingLines = false;
+      } catch (e) {
+        console.error("Fehler beim Parsen der Leitungen:", e.message);
+        isLoadingLines = false;
+      }
+    })
+    .catch(err => {
+      console.error("Fehler beim Laden der Leitungen:", err);
+      isLoadingLines = false;
+    });
+}
+
+// Event Listener für Stromleitungen
+map.on('moveend', function() {
+  if (map.getZoom() >= 11) { // Nur ab bestimmtem Zoom-Level laden
+    loadStromleitungen();
+  } else {
+    lines110.clearLayers();
+    lines220.clearLayers();
+    loadedLinesBounds = null;
+  }
+});
 
       // LayerGroup für Naturschutzgebiete
     var nsgLayer = L.layerGroup();
@@ -1047,7 +867,8 @@ map.on('moveend', function() {
     marker.addTo(layer);
     });
 
-
+    // Nur die Windräder-Layergruppe zur Karte hinzufügen
+    windräderLayer.addTo(map);
 // WMS-Layer für Windräder
 const windraederWMSLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/energieatlas/windenergieanlagen?", {
     layers: 'windenergieanlagen',
@@ -1055,56 +876,6 @@ const windraederWMSLayer = L.tileLayer.wms("https://www.lfu.bayern.de/gdi/wms/en
     transparent: true,
     version: '1.3.0',
     attribution: 'Bayerisches Landesamt für Umwelt'
-});
-
-// GetFeatureInfo für Popups - korrigierte Version
-map.on('click', function(e) {
-    // Nur ausführen wenn der WMS-Layer aktiv ist
-    if (!map.hasLayer(windraederWMSLayer)) return;
-
-    const latlng = e.latlng;
-    const size = map.getSize();
-    const bounds = map.getBounds();
-
-    // Parameter für GetFeatureInfo-Request (WMS 1.3.0)
-    const params = {
-        request: 'GetFeatureInfo',
-        service: 'WMS',
-        crs: 'EPSG:4326', // Für Version 1.3.0 verwenden wir 'crs' statt 'srs'
-        version: '1.3.0',
-        format: 'image/png',
-        // Für EPSG:4326 in WMS 1.3.0 ist die Reihenfolge lat,lon statt lon,lat
-        bbox: bounds.getWest() + ',' + bounds.getSouth() + ',' + bounds.getEast() + ',' + bounds.getNorth(),
-        height: size.y,
-        width: size.x,
-        layers: 'windenergieanlagen',
-        query_layers: 'windenergieanlagen',
-        info_format: 'text/html',
-        i: Math.round(e.containerPoint.x), // Für Version 1.3.0 verwenden wir 'i' statt 'x'
-        j: Math.round(e.containerPoint.y)  // Für Version 1.3.0 verwenden wir 'j' statt 'y'
-    };
-
-    // URL zusammenbauen
-    const url = "https://www.lfu.bayern.de/gdi/wms/energieatlas/windenergieanlagen?" +
-                Object.keys(params).map(key => key + '=' + encodeURIComponent(params[key])).join('&');
-
-    console.log('GetFeatureInfo URL:', url); // Zum Debuggen
-
-    // Request ausführen
-    fetch(url)
-        .then(response => response.text())
-        .then(data => {
-            console.log('Response:', data); // Zum Debuggen
-            if (data && data.trim() !== '' && !data.includes('no features')) {
-                L.popup()
-                    .setLatLng(latlng)
-                    .setContent(data)
-                    .openOn(map);
-            }
-        })
-        .catch(error => {
-            console.error('Fehler beim Abrufen der Feature-Informationen:', error);
-        });
 });
 
 	  // WMS-Layer für Windvorranggebiete aus den Metadaten hinzufügen
@@ -1329,18 +1100,12 @@ const waldfunktionWMS = L.tileLayer.wms('https://www.fovgis.bayern.de/arcgis/ser
 
     // Standardkarte
     osm.addTo(map);
-    windräderLayer.addTo(map);
-    //umspannwerkeLayer.addTo(map);
-    //lines110.addTo(map);
-    //lines220.addTo(map);
-
 
 // Layer-Control mit allen Layern
-L.control.ruler().addTo(map);
 L.control.layers({
   "OpenStreetMap": osm,
-  "Satelliten Karte": esriSatWithLabels,
-  "Topografische Karte": opentopo,
+  "Satelliten Karte (Esri)": esriSatWithLabels,
+  "Topografische Karte (Opentopo)": opentopo,
   "Carto Light": cartoLight,
   "Carto Dark": cartoDark,
   "Google Streets": googleStreets,
@@ -1393,6 +1158,178 @@ L.control.layers({
     } else {
     map.fitBounds(bounds.pad(0.1));
     }
+
+    // Mess-Funktionalität
+    let measureLayer = L.layerGroup().addTo(map);
+    let currentMeasureMode = null;
+    let measurePath = [];
+    let measurePolyline = null;
+    let measurePolygon = null;
+    let measureMarkers = [];
+
+    // Measure-Tools Event-Handler
+    document.getElementById('measureDistance').addEventListener('click', function() {
+      clearMeasurements();
+      setMeasureMode('distance');
+      updateButtonStates(this);
+    });
+
+    document.getElementById('measureArea').addEventListener('click', function() {
+      clearMeasurements();
+      setMeasureMode('area');
+      updateButtonStates(this);
+    });
+
+    document.getElementById('clearMeasure').addEventListener('click', function() {
+      clearMeasurements();
+      setMeasureMode(null);
+      updateButtonStates(null);
+      document.getElementById('measureResult').style.display = 'none';
+    });
+
+    function updateButtonStates(activeButton) {
+      document.querySelectorAll('.measure-tools button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      if (activeButton) {
+        activeButton.classList.add('active');
+      }
+    }
+
+    function setMeasureMode(mode) {
+      currentMeasureMode = mode;
+      if (mode) {
+        map.getContainer().style.cursor = 'crosshair';
+      } else {
+        map.getContainer().style.cursor = '';
+      }
+    }
+
+    function clearMeasurements() {
+      measureLayer.clearLayers();
+      measurePath = [];
+      measurePolyline = null;
+      measurePolygon = null;
+      measureMarkers = [];
+    }
+
+    // Karten-Click Handler für Messungen
+    map.on('click', function(e) {
+      if (!currentMeasureMode) return;
+
+      const latlng = e.latlng;
+      measurePath.push(latlng);
+
+      // Marker für Messpunkt hinzufügen
+      const marker = L.circleMarker(latlng, {
+        radius: 4,
+        fillColor: '#ff7800',
+        color: '#000',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      }).addTo(measureLayer);
+      measureMarkers.push(marker);
+
+      if (currentMeasureMode === 'distance') {
+        handleDistanceMeasure();
+      } else if (currentMeasureMode === 'area') {
+        handleAreaMeasure();
+      }
+    });
+
+    function handleDistanceMeasure() {
+      if (measurePath.length >= 2) {
+        // Polyline aktualisieren oder erstellen
+        if (measurePolyline) {
+          measureLayer.removeLayer(measurePolyline);
+        }
+
+        measurePolyline = L.polyline(measurePath, {
+          color: '#ff7800',
+          weight: 3,
+          opacity: 0.8
+        }).addTo(measureLayer);
+
+        // Entfernung berechnen
+        let totalDistance = 0;
+        for (let i = 1; i < measurePath.length; i++) {
+          totalDistance += measurePath[i-1].distanceTo(measurePath[i]);
+        }
+
+        displayMeasureResult(formatDistance(totalDistance));
+      }
+    }
+
+    function handleAreaMeasure() {
+      if (measurePath.length >= 3) {
+        // Polygon aktualisieren oder erstellen
+        if (measurePolygon) {
+          measureLayer.removeLayer(measurePolygon);
+        }
+
+        measurePolygon = L.polygon(measurePath, {
+          color: '#ff7800',
+          weight: 2,
+          opacity: 0.8,
+          fillColor: '#ff7800',
+          fillOpacity: 0.2
+        }).addTo(measureLayer);
+
+        // Fläche berechnen (approximativ mit Leaflet's built-in Methode)
+        const area = L.GeometryUtil.geodesicArea(measurePath);
+        displayMeasureResult(formatArea(area));
+      }
+    }
+
+    function formatDistance(meters) {
+      if (meters >= 1000) {
+        return (meters / 1000).toFixed(2) + ' km';
+      } else {
+        return meters.toFixed(1) + ' m';
+      }
+    }
+
+    function formatArea(squareMeters) {
+      if (squareMeters >= 10000) {
+        return (squareMeters / 10000).toFixed(2) + ' ha';
+      } else if (squareMeters >= 1000000) {
+        return (squareMeters / 1000000).toFixed(2) + ' km²';
+      } else {
+        return squareMeters.toFixed(1) + ' m²';
+      }
+    }
+
+   // function displayMeasureResult(result) {
+   //   const resultDiv = document.getElementById('measureResult');
+   //   resultDiv.innerHTML = 'Ergebnis: ' + result;
+   //   resultDiv.style.display = 'block';
+   // }
+
+function displayMeasureResult(result) {
+  const resultDiv = document.getElementById('measureResult');
+  resultDiv.innerHTML = result; // "Ergebnis: " entfernt
+  resultDiv.style.display = 'block';
+}
+    // Doppelklick beendet Messung
+    map.on('dblclick', function(e) {
+      if (currentMeasureMode) {
+        setMeasureMode(null);
+        updateButtonStates(null);
+        map.getContainer().style.cursor = '';
+      }
+    });
+
+    // ESC-Taste bricht Messung ab
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && currentMeasureMode) {
+        clearMeasurements();
+        setMeasureMode(null);
+        updateButtonStates(null);
+        document.getElementById('measureResult').style.display = 'none';
+      }
+    });
+
   </script>
 </body>
 </html>
